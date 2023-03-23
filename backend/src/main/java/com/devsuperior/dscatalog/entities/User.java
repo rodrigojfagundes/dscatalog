@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 //criando a CLASSE USER
-// 
+//
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable{
@@ -40,24 +40,19 @@ public class User implements Serializable{
 	//
 	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
 	//no BANCO de MUITOS para MUITOS... 
-	//o parametro FETCHTYPE.EAGER serve para q quando for buscado um
-	//USER no BANCO, vim JUNTO as ROLES/REGRAS/privilegios desse
-	//USUARIO... o qual nos fazemos o MAPEAMENTO ali em baixo
-	//e o ANNOTATION @JOINTABLE, e para criar uma TABELA q faz
-	//uma ASSOCIACAO entre as DUAS ENTIDADES (Role e User)
-	//primeiro argumento(name) o NOME da TABELA...
-	//JoinColumns e para dizer qual vai ser a chave ESTRANGEIRA de USER
-	//e o INVERSEJOINCOLUMN e para dizer qual a chave ESTRANGEIRA de ROLE
 	@ManyToMany
 	@JoinTable(name = "tb_user_role",
 		joinColumns = @JoinColumn(name = "user_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id"))	
-
+	//fazendo o mapeamento em q um PRODUCT tem varias CATEGORIES
+	
+	//fazendo o mapeamento em q um USER tem varias ROLES
 	private Set<Role> roles = new HashSet<>();
 	
 
 	public User() {
 	}
+		
 
 	public User(Long id, String firstName, String lastName, String email, String password) {
 		super();
@@ -69,6 +64,7 @@ public class User implements Serializable{
 	}
 	
 
+	
 	public Long getId() {
 		return id;
 	}
@@ -117,8 +113,6 @@ public class User implements Serializable{
 		return roles;
 	}
 
-	//
-	//HASHCODE EQUALS para fazer as comparacoes
 	@Override
 	public int hashCode() {
 		final int prime = 31;

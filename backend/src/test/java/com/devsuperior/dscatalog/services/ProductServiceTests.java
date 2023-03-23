@@ -54,12 +54,10 @@ public class ProductServiceTests {
 		existingId = 1L;
 		nonExistingId = 2L;
 		dependentId = 3L;
-
 		product = Factory.createProduct();
 
 		page = new PageImpl<>(List.of(product));
 		
-
 		Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(page);
 		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(product);
 		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
@@ -69,13 +67,16 @@ public class ProductServiceTests {
 		Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
 	}
 	
+	
+	//vamos fazer um TESTE de UNIDADE/CLASSE para testar o metodo FINDALLPAGED...
+	//q deve retornar uma PAGINA/PAGE de PRODUCTS
 	@Test
 	public void findAllPagedShouldReturnPage() {
 
 		Pageable pageable = PageRequest.of(0, 12);
 		Page<ProductDTO> result = service.findAllPaged(pageable);
 		Assertions.assertNotNull(result);
-
+		
 		Mockito.verify(repository, times(1)).findAll(pageable);
 	}
 	
@@ -90,10 +91,9 @@ public class ProductServiceTests {
 	}
 	
 	
-
 	@Test
 	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-		
+
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.delete(nonExistingId);
 		});
@@ -101,13 +101,14 @@ public class ProductServiceTests {
 		Mockito.verify(repository, times(1)).deleteById(nonExistingId);
 	}
 	
+	
+	
 	@Test
 	public void deleteShouldDoNothingWhenIdExists() {
 		
 		Assertions.assertDoesNotThrow(() -> {
 			service.delete(existingId);
 		});
-		
 		Mockito.verify(repository, times(1)).deleteById(existingId);
 	}
 }

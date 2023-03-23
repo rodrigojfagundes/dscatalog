@@ -53,6 +53,7 @@ public class UserService {
 		//FINDALL...
 		//
 		Page<User> list = repository.findAll(pageable);
+
 		return list.map(x -> new UserDTO(x));
 		//return listDto;
 	}
@@ -62,16 +63,15 @@ public class UserService {
 	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
 	//
-	//
 	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
 		//chamando o OBJ REPOSITORY que é o OBJ da classe USERREPOSITORY
 		//e essa classe é a responsavel por ACESSO AO BANCO
 		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
-		//do tipo PRODUCT
+		//do tipo USER
 		Optional<User> obj = repository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-
+		
 		return new UserDTO(entity);
 	}
 	
@@ -81,7 +81,7 @@ public class UserService {
 	public UserDTO insert(UserInsertDTO dto) {
 		User entity = new User();
 		copyDtoToEntity(dto, entity);
-		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+		entity.setPassword(passwordEncoder.encode(dto.getPassword()));		
 		//para SALVAR no BANCO
 		entity = repository.save(entity);
 
@@ -94,9 +94,9 @@ public class UserService {
 	public UserDTO update(Long id, UserDTO dto) {
 		try {
 			User entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);
+			copyDtoToEntity(dto, entity);		
 			entity = repository.save(entity);
-
+	
 			return new UserDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
@@ -117,19 +117,16 @@ public class UserService {
 		}
 	}
 	
-	//
-	//
-	//criando um metodo AUXILIAR de nome COPYDTOTOENTITY para pegar 
-	//as INFORMACOES/ATRIBUTOS q estao no USERDTO e passar para o
-	//ENTITY que é uma VAR/OBJ do tipo USER
+		
+		//Converter de USERDTO para USER
 	private void copyDtoToEntity(UserDTO dto, User entity) {
 
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
-
+		
+	
 		entity.getRoles().clear();
-
 		for (RoleDTO roleDto : dto.getRoles()) {
 			Role role = roleRepository.getOne(roleDto.getId());
 

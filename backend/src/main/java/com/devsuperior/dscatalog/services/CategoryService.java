@@ -24,12 +24,15 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE CATEGORYREPOSITORY (repository)
+//
 @Service
 public class CategoryService {
 	
 	@Autowired
 	private CategoryRepository repository;
 	
+	//criando um METODO do tipo PAGE de CATEGORYDTO
+	//q vamos chamar de FINDALLPAGED q recebe um PAGEABLE
 	@Transactional(readOnly = true)
 	public Page<CategoryDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
@@ -38,7 +41,7 @@ public class CategoryService {
 		//FINDALL...
 		//
 		Page<Category> list = repository.findAll(pageable);
-	
+
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
@@ -48,16 +51,11 @@ public class CategoryService {
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
 	//
-	//
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
-		//chamando o OBJ REPOSITORY que é o OBJ da classe CATEGORYREPOSITORY
-		//e essa classe é a responsavel por ACESSO AO BANCO
-		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
-		//do tipo CATEGORY
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-	
+		
 		return new CategoryDTO(entity);
 	}
 	
@@ -65,9 +63,13 @@ public class CategoryService {
 	//no BANCO
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
+	
 		Category entity = new Category();
 		entity.setName(dto.getName());
 		//para SALVAR no BANCO
+		//vamos chamar o REPOSITORY q é um OBJ do tipo CATEGORYREPOSITORY
+		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
+		//na nossa VAR ENTITY q é do tipo CATEGORY
 		entity = repository.save(entity);
 
 		return new CategoryDTO(entity);
@@ -75,7 +77,7 @@ public class CategoryService {
 	
 	//metodo do TIPO CATEGORYDTO de nome UPDATE para ATUALIZAR
 	//os valores de uma CATEGORYDTO/category no BANCO
-
+	//
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
@@ -92,15 +94,12 @@ public class CategoryService {
 	
 	//criando um METODO para DELETAR uma CATEGORY
 	public void delete(Long id) {
-
 		try {
 			repository.deleteById(id);
 		}
-		
 		catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
-
 		catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}

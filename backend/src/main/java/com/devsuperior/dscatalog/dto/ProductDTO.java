@@ -15,6 +15,8 @@ import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
 
 
+//
+//
 //DTO é um OBJ q serve para FILTRAR transferencia de DADOS... Exemplo
 //temos um OBJ do tipo USER q tem NOME, IDADE, CPF, CEL, etc... Mas
 //queremos q seja transferido para o FRONT apenas o NOME e IDADE
@@ -38,10 +40,10 @@ public class ProductDTO implements Serializable {
 	@Positive(message = "Preco deve ser um valor positivo")
 	private Double price;
 	private String imgUrl;
-	
+
 	@PastOrPresent(message = "A data do produto nao pode ser futura")
 	private Instant date;
-	
+
 	private List<CategoryDTO> categories = new ArrayList<>();
 	
 	public ProductDTO() {
@@ -64,9 +66,8 @@ public class ProductDTO implements Serializable {
 		this.imgUrl = entity.getImgUrl();
 		this.date = entity.getDate();
 	}
-	
+	 
 	public ProductDTO(Product entity, Set<Category> categories) {
-
 		this(entity);
 		categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
 	}

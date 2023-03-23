@@ -15,10 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-
-//ANNOTATION @ENTITY e para dizer q essa CLASSE sera uma TABELA no
-//BANCO (mapeamento SPRING DATA JPA)... e a ANNOTATION @TABLE e 
-//para dizer q o nome da TABELA sera tb_product
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable {
@@ -33,6 +29,7 @@ public class Product implements Serializable {
 	private String description;
 	private Double price;
 	private String imgUrl;
+
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant date;
 	
@@ -43,7 +40,12 @@ public class Product implements Serializable {
 	//
 	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
 	//no BANCO de MUITOS para MUITOS... 
-
+	//e o ANNOTATION @JOINTABLE, e para criar uma TABELA q faz
+	//uma ASSOCIACAO entre as DUAS ENTIDADES (Categories e Products)
+	//primeiro argumento(name) o NOME da TABELA...
+	//JoinColumns e para dizer qual vai ser a chave ESTRANGEIRA de PRODUCT
+	//e o INVERSEJOINCOLUMN e para dizer qual a chave ESTRANGEIRA de CATEGORY
+	
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
 		joinColumns = @JoinColumn(name = "product_id"),
@@ -53,7 +55,6 @@ public class Product implements Serializable {
 	
 	public Product() {
 	}
-
 
 	public Product(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;

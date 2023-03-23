@@ -49,7 +49,6 @@ public class ProductResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	//
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
 	//
@@ -66,7 +65,10 @@ public class ProductResource {
 	
 	// CADASTRANDO PRODUCT NO BANCO COM POST
 	//
-	//
+	// METODO POST RESTFUL para inserir no BANCO um novo produto
+	// o RESPONSEENTITY e do tipo PRODUCTDTO, pois DPS de INSERIR
+	// nos vamos RETORNAR o nome da PRODUCT/productdto q foi inserido
+	// o nome do metodo vai ser INSERT
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
 		dto = service.insert(dto);
@@ -84,14 +86,15 @@ public class ProductResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
-
+		
 		return ResponseEntity.ok().body(dto);
 	}
-	//
-	//
+
+
 	// METODO/ENDPOINT para DELETAR um PRODUCT
+	//
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();
