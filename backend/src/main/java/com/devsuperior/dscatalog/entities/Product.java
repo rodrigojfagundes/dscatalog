@@ -10,29 +10,60 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+
+
+//ANNOTATION @ENTITY e para dizer q essa CLASSE sera uma TABELA no
+//BANCO (mapeamento SPRING DATA JPA)... e a ANNOTATION @TABLE e 
+//para dizer q o nome da TABELA sera tb_product
 @Entity
 @Table(name = "tb_product")
-
+//criando uma classe de nome PRODUCT
 public class Product implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	
+	//declarando os atributos da class q TBM serão COLUNAS nas
+	//tabelas do BANCO... o @ID e para dizer q o ATRIBUTO ID sera a
+	//chave primaria da tabela
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	@Column(columnDefinition = "TEXT")
 	private String description;
 	private Double price;
 	private String imgUrl;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant date;
-	 
+	
+	//para o PRODUCT estar associado com VARIAS CATEGORIAS
+	//vamos ter q declarar uma COLECAO de CATEGORIAS com
+	//o SET/CONJUNTO, pois o SET NAO aceita REPETICOES 
+	//(ao contrario da lista)
+	//
+	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
+	//no BANCO de MUITOS para MUITOS... 
+	//e o ANNOTATION @JOINTABLE, e para criar uma TABELA q faz
+	//uma ASSOCIACAO entre as DUAS ENTIDADES (Categories e Products)
+	//primeiro argumento(name) o NOME da TABELA...
+	//JoinColumns e para dizer qual vai ser a chave ESTRANGEIRA de PRODUCT
+	//e o INVERSEJOINCOLUMN e para dizer qual a chave ESTRANGEIRA de CATEGORY
+	@ManyToMany
+	@JoinTable(name = "tb_product_category",
+	joinColumns = @JoinColumn(name = "product_id"),
+	inverseJoinColumns = @JoinColumn(name = "category_id")
+			)
 	Set<Category> categories = new HashSet<>();
 	
 	public Product() {
 	}
+	
 	
 	public Product(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
@@ -43,7 +74,7 @@ public class Product implements Serializable{
 		this.date = date;
 	}
 	
-
+	
 	public Long getId() {
 		return id;
 	}

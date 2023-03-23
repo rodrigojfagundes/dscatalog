@@ -11,15 +11,18 @@ import com.devsuperior.dscatalog.entities.Category;
 //jogados para o RESOURCER/controlador, e assim da mais seguranca e 
 //economiza dados na REDE
 
+	//Classe para a criacao de um OBJ do tipo CATEGORYDTO
 public class CategoryDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String name;
 	
 	public CategoryDTO() {
 	}
 	
+	
+
 	public CategoryDTO(Long id, String name) {
 		this.id = id;
 		this.name = name;

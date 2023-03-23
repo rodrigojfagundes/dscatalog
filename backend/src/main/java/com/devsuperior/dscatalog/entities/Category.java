@@ -17,29 +17,34 @@ import javax.persistence.Table;
 //colocando um ANNOTATION @ENTITY para MAPEAR a classe CATEGORY
 //com as ANNOTATION do JPA... 
 @Entity
+//usando a ANNOTATION @TABLE para criar uma TABELA e coluna
+//com o NOME da CLASSE e com colunas com nome dos ATRIBUTOS
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	
+
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant createdAt;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updateAt;
 	
+
 	public Category() {
 	}
 	
+
 	public Category(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 	
+
 	public Long getId() {
 		return id;
 	}
@@ -74,6 +79,8 @@ public class Category implements Serializable {
 		updateAt = Instant.now();
 	}
 	
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -97,9 +104,5 @@ public class Category implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
-	
-	
-	
+	}	
 }
