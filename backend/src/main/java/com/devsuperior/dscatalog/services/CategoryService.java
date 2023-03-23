@@ -25,6 +25,7 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE CATEGORYREPOSITORY (repository)
 //
+
 @Service
 public class CategoryService {
 	
@@ -40,7 +41,6 @@ public class CategoryService {
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
 		Page<Category> list = repository.findAll(pageable);
-
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
@@ -57,7 +57,7 @@ public class CategoryService {
 		//do tipo CATEGORY
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-
+		
 		return new CategoryDTO(entity);
 	}
 	
@@ -79,7 +79,8 @@ public class CategoryService {
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
-			Category entity = repository.getOne(id);	
+
+			Category entity = repository.getOne(id);
 			entity.setName(dto.getName());
 			entity = repository.save(entity);
 

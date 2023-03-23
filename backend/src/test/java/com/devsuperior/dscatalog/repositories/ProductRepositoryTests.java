@@ -16,7 +16,6 @@ import com.devsuperior.dscatalog.tests.Factory;
 		//essa classe PRODUCTREPOTORYTESTS vai servir para nos testarmos
 		//os METODOS da CLASSE PRODUCTREPOSITORY
 
-
 @DataJpaTest
 public class ProductRepositoryTests {
 	
@@ -27,26 +26,27 @@ public class ProductRepositoryTests {
 	private long nonExistingId;
 	private long countTotalProducts;
 	
+	//o BEFOREEACH é um FIXTURE q é um ANNOTATION q
+	//sera EXECUTADO (BEFORE EACH / ANTES DE CADA) q sera executado
+	//ANTES de CADA um dos 3 TESTES a baixo
 	@BeforeEach
 	void setUp() throws Exception {
-
+		
 		existingId = 1L;
-
 		nonExistingId = 1000L;
-
 		countTotalProducts = 25L;
 	}
 	
 	//Teste para testar SE o metodo SAVE do REPOSITORY realmente 
 	//esta funcionando
-	//
+
 	@Test
 	public void saveShouldPersistWithAutoincrementWhenIdIsNull() {
-
+		
 		Product product = Factory.createProduct();
 
 		product.setId(null);
-
+		
 		product = repository.save(product);
 		Optional<Product> result = repository.findById(product.getId());
 		
@@ -61,10 +61,10 @@ public class ProductRepositoryTests {
 	//se ta funcionando
 	@Test
 	public void deleteShouldDeleteObjectWhenIdExists() {
-
-		repository.deleteById(existingId); 
+		repository.deleteById(existingId);
+		 
 		Optional<Product> result = repository.findById(existingId);
-
+	
 		Assertions.assertFalse(result.isPresent());
 	}
 	
@@ -74,7 +74,6 @@ public class ProductRepositoryTests {
 	//e esse ID NAO EXISTE, se retorna a MSG de erro
 	@Test
 	public void deleteShouldThrowEmptyResultDataAccessExceptionWhenIdDoesNotExist() {
-		
 		Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
 			repository.deleteById(nonExistingId);			
 		});

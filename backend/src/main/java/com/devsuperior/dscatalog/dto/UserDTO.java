@@ -18,9 +18,9 @@ import com.devsuperior.dscatalog.entities.User;
 
 public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	
 	private Long id;
+
 	@NotBlank(message = "Campo obrigatorio")
 	private String firstName;
 	private String lastName;
@@ -31,6 +31,7 @@ public class UserDTO implements Serializable {
 	
 	public UserDTO() {
 	}
+	
 
 	public UserDTO(Long id, String firstName, String lastName, String email) {
 		this.id = id;
@@ -48,7 +49,7 @@ public class UserDTO implements Serializable {
 		entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
 		
 	}
-	
+
 	public Long getId() {
 		return id;
 	}

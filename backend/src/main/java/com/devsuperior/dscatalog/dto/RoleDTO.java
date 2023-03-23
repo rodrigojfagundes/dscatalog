@@ -9,7 +9,7 @@ public class RoleDTO implements Serializable {
 
 	private Long id;
 	private String authority;
-
+	
 	public RoleDTO() {
 	}
 
@@ -24,7 +24,6 @@ public class RoleDTO implements Serializable {
 		id = role.getId();
 		authority = role.getAuthority();
 	}
-	
 	
 	public Long getId() {
 		return id;

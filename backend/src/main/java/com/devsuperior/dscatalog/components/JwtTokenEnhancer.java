@@ -13,12 +13,14 @@ import org.springframework.stereotype.Component;
 import com.devsuperior.dscatalog.entities.User;
 import com.devsuperior.dscatalog.repositories.UserRepository;
 
+//vamos passar mais dados para o TOKEN do usuario, exemplo no 
+//propio TOKEN vamos passar o ID do usuario ou o NOME do usuario 
+//com o TOKENENHENCE que é um componente q serve para acresentar 
+//mais coisas no TOKEN de autenticacao
+//
 @Component
 public class JwtTokenEnhancer implements TokenEnhancer {
-	
-	//fazendo uma INJECAO de DEPEDENCIAS de USERREPOSITORY
-	//para podermos acessar o dados USUARIO no BANCO para assim 
-	//pd pegar o ID NOME de USUARIO, etc...
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -32,8 +34,8 @@ public class JwtTokenEnhancer implements TokenEnhancer {
 		map.put("userFirstName", user.getFirstName());
 		map.put("userId", user.getId());
 		
-		
 		DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken)accessToken;
+
 		token.setAdditionalInformation(map);
 		
 		return accessToken;

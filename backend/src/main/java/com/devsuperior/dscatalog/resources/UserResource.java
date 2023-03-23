@@ -46,11 +46,12 @@ public class UserResource {
 	@GetMapping
 	public ResponseEntity<Page<UserDTO>> findAll(
 			Pageable pageable) {
-		Page<UserDTO> list = service.findAllPaged(pageable);	
+		Page<UserDTO> list = service.findAllPaged(pageable);
 
 		return ResponseEntity.ok().body(list);
 	}
 	
+	//
 	// criando um METODO/ENDPOINT para retornar um USUARIO pelo o ID
 	// da USUARIO
 	//
@@ -61,10 +62,9 @@ public class UserResource {
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		UserDTO dto = service.findById(id);
-
+		
 		return ResponseEntity.ok().body(dto);
 	}
-	
 
 	// CADASTRANDO USER NO BANCO COM POST
 	//
@@ -75,13 +75,12 @@ public class UserResource {
 	@PostMapping
 	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
 		UserDTO newDto = service.insert(dto);
-
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newDto.getId()).toUri();
 		
 		return ResponseEntity.created(uri).body(newDto);
 	}
-
+	
 	// METODO/ENDPOINT para ATUALIZAR um USER
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
@@ -101,6 +100,7 @@ public class UserResource {
 	//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
 	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
 	//do USER q queremos DELETAR
+	//
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);

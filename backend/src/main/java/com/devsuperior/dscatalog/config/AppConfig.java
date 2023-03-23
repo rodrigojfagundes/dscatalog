@@ -7,6 +7,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+//Classe AppConfig e para guardar 
+//as configuracoes GERAIS da aplicacao/sistema
 
 @Configuration
 public class AppConfig {

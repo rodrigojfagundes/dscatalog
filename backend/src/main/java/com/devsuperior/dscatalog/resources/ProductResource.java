@@ -34,7 +34,7 @@ import com.devsuperior.dscatalog.services.ProductService;
 @RestController
 @RequestMapping(value = "/products")
 public class ProductResource {
-	
+
 	@Autowired
 	private ProductService service;
 	
@@ -44,7 +44,6 @@ public class ProductResource {
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> findAll(
 			Pageable pageable) {
-
 		Page<ProductDTO> list = service.findAllPaged(pageable);	
 
 		return ResponseEntity.ok().body(list);
@@ -58,13 +57,12 @@ public class ProductResource {
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
 	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
-	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {		
 		ProductDTO dto = service.findById(id);
-		
+
 		return ResponseEntity.ok().body(dto);
 	}
 	
-
 	// CADASTRANDO PRODUCT NO BANCO COM POST
 	//
 	//
@@ -73,9 +71,14 @@ public class ProductResource {
 	// nos vamos RETORNAR o nome da PRODUCT/productdto q foi inserido
 	// o nome do metodo vai ser INSERT
 	@PostMapping
+	//passando a ANNOTATION VALID pois ela serve para chamar as
+	//ANNOTATION tipo SIZE, POSITIVE,PASTORPRESENT, etc...
+	//q estao no PRODUCTDTO
+	//dessa forma nos so podemos INSERIR um PRODUCTDTO q atende
+	//as requisicoes (qtde de letra no nome, preco de valor positivo
+	//etc...)
 	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
-		dto = service.insert(dto);
-		
+		dto = service.insert(dto);	
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
 		
@@ -88,7 +91,6 @@ public class ProductResource {
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
 	// da PRODUCT q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
-
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
 
@@ -108,4 +110,4 @@ public class ProductResource {
 
 		return ResponseEntity.noContent().build();
 	}
-}
+} 

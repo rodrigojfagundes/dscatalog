@@ -35,11 +35,12 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE USERREPOSITORY (repository)
-
+//
 @Service
 public class UserService implements UserDetailsService {
 	
 	private static Logger logger = LoggerFactory.getLogger(UserService.class);
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
@@ -59,22 +60,23 @@ public class UserService implements UserDetailsService {
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
 		Page<User> list = repository.findAll(pageable);
+
 		return list.map(x -> new UserDTO(x));
 		//return listDto;
 	}
 	
 	//
-	//metodo FINDBYID q busca uma determinado USER conforme o ID
+	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
-	//
 	//
 	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
 		//chamando o OBJ REPOSITORY que é o OBJ da classe USERREPOSITORY
 		//e essa classe é a responsavel por ACESSO AO BANCO
 		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
-		//do tipo USER
+		//do tipo PRODUCT
 		Optional<User> obj = repository.findById(id);
+		//OBS: Objeto OPTIONAL é uma tecnologia q serve para EVITAR
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 
 		return new UserDTO(entity);
@@ -85,6 +87,7 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public UserDTO insert(UserInsertDTO dto) {
 		User entity = new User();
+
 		copyDtoToEntity(dto, entity);
 
 		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -94,21 +97,19 @@ public class UserService implements UserDetailsService {
 		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
 		//na nossa VAR ENTITY q é do tipo USER
 		entity = repository.save(entity);
-		
+
 		return new UserDTO(entity);
 	}
 	
 	//metodo do TIPO USERDTO de nome UPDATE para ATUALIZAR
 	//os valores de um USERDTO no BANCO
-	
 	@Transactional
 	public UserDTO update(Long id, UserUpdateDTO dto) {
-
 		try {
 			User entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);
+			copyDtoToEntity(dto, entity);		
 			entity = repository.save(entity);
-
+	
 			return new UserDTO(entity);
 		}
 
@@ -118,35 +119,25 @@ public class UserService implements UserDetailsService {
 		}		
 	}
 	
-	//criando um METODO para DELETAR um USER
+	//criando um METODO para DELETAR um PRODUCT
 	public void delete(Long id) {
-
 		try {
 			repository.deleteById(id);
 		}
-
 		catch (EmptyResultDataAccessException e) {
-
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
-
 		catch (DataIntegrityViolationException e) {
-
 			throw new DatabaseException("Integrity violation");
 		}
 	}
 	
-	//
-	//
-	//criando um metodo AUXILIAR de nome COPYDTOTOENTITY para pegar 
-	//as INFORMACOES/ATRIBUTOS q estao no USERDTO e passar para o
-	//ENTITY que é uma VAR/OBJ do tipo USER
 	private void copyDtoToEntity(UserDTO dto, User entity) {
 
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
-
+		
 		entity.getRoles().clear();
 
 		for (RoleDTO roleDto : dto.getRoles()) {
@@ -156,19 +147,16 @@ public class UserService implements UserDetailsService {
 		}
 	}
 	
-	
-	//INTERFACE USERDETAILSSERVICE serve para nos passarmos 
-	//um EMAIL e ela RETORNA o USERDETAILS com os dados de 
-	//autenticacao desse usuario
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = repository.findByEmail(username);
 
 		if(user == null) {
 			logger.error("User not found" + username);
-
 			throw new UsernameNotFoundException("Email not found");
 		}
+
 		logger.info("user found" + username);
 		return user;
 	}	
