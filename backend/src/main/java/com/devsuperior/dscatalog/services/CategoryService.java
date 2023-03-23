@@ -23,6 +23,7 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE CATEGORYREPOSITORY (repository)
+//
 @Service
 public class CategoryService {
 	
@@ -31,16 +32,18 @@ public class CategoryService {
 	
 	@Transactional(readOnly = true)
 	public Page<CategoryDTO> findAllPaged(Pageable pageable){
-		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
+		//vamos chamar a variavel repository do tipo
 		//CATEGORYREPOSITORY e como ele o CATEGORYREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
-		//
 		Page<Category> list = repository.findAll(pageable);
+
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
 	
+	//
+	//
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
 	//
@@ -48,7 +51,7 @@ public class CategoryService {
 	public CategoryDTO findById(Long id) {
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-		
+	
 		return new CategoryDTO(entity);
 	}
 	
@@ -57,14 +60,14 @@ public class CategoryService {
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
 		Category entity = new Category();
-		//agora vamos pegar os valores q ESTAO na VAR/OBJ DTO q foi
-		//passado como argumento no METO INSERT
-		//e vamos ATRIBUIR a nossa VAR ENTITY q é uma VAR do tipo
-		//CATEGORY...
+
 		entity.setName(dto.getName());
 		//para SALVAR no BANCO
+		//vamos chamar o REPOSITORY q é um VAR do tipo CATEGORYREPOSITORY
+		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
+		//na nossa VAR ENTITY q é do tipo CATEGORY
 		entity = repository.save(entity);
-		
+
 		return new CategoryDTO(entity);
 	}
 	
@@ -73,18 +76,17 @@ public class CategoryService {
 	//os valores de uma CATEGORYDTO/category no BANCO
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
-	
+		
 		try {
 		Category entity = repository.getOne(id);
 		entity.setName(dto.getName());
 		entity = repository.save(entity);
-		
+
 		return new CategoryDTO(entity);
 		}
 		catch(EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found" + id);
 		}
-		
 	}
 	
 	//criando um METODO para DELETAR uma CATEGORY
