@@ -13,12 +13,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
- 
+//criando a CLASSE USER 
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -35,18 +35,20 @@ public class User implements Serializable{
 	//(ao contrario da lista)
 	//
 	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
-	//no BANCO de MUITOS para MUITOS... 
+	//no BANCO de MUITOS para MUITOS... USER e ROLE
 	@ManyToMany
 	@JoinTable(name = "tb_user_role",
 		joinColumns = @JoinColumn(name = "user_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id"))	
 
+	
+	//fazendo o mapeamento em q um USER tem varias ROLES
 	private Set<Role> roles = new HashSet<>();
 	
 
 	public User() {
 	}
-		
+
 	public User(Long id, String firstName, String lastName, String email, String password) {
 		super();
 		this.id = id;

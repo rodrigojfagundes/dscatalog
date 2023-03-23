@@ -15,17 +15,18 @@ import com.devsuperior.dscatalog.entities.User;
 
 public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
-
+	
 	Set<RoleDTO> roles = new HashSet<>();
 
 	public UserDTO() {
 	}
 	
+
 	public UserDTO(Long id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
@@ -33,12 +34,13 @@ public class UserDTO implements Serializable {
 		this.email = email;
 	}
 	
-	
 	public UserDTO(User entity) {
+
 		this.id = entity.getId();
 		this.firstName = entity.getFirstName();
 		this.lastName = entity.getLastName();
 		this.email = entity.getEmail();
+
 		entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
 		
 	}

@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Transactional
 public class ProductResourceIT {
 	
-	
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -37,7 +36,9 @@ public class ProductResourceIT {
 	private Long existingId;
 	private Long nonExistingId;
 	private Long countTotalProducts;
-
+	
+	//setando uma configuracao padrao de valores antes
+	//de executar os testes
 	@BeforeEach
 	void setUp() throws Exception {
 		existingId = 1L;
@@ -49,11 +50,11 @@ public class ProductResourceIT {
 	//quando e pedido
 	@Test
 	public void findAllShouldReturnSortedPageWhenSortByName() throws Exception {
-
+		
 		ResultActions result = 
 				mockMvc.perform(get("/products?page=0&size=12&sort=name,asc")
 					.accept(MediaType.APPLICATION_JSON));
-		
+
 		result.andExpect(status().isOk());
 		result.andExpect(jsonPath("$.totalElements").value(countTotalProducts));
 		result.andExpect(jsonPath("$.content").exists());		

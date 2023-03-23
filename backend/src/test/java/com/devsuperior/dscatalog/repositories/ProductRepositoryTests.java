@@ -12,9 +12,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import com.devsuperior.dscatalog.entities.Product;
 import com.devsuperior.dscatalog.tests.Factory;
 
-//CLASSE DE TESTES
+		//CLASSE DE TESTES
 		//essa classe PRODUCTREPOTORYTESTS vai servir para nos testarmos
 		//os METODOS da CLASSE PRODUCTREPOSITORY
+
 @DataJpaTest
 public class ProductRepositoryTests {
 	
@@ -25,32 +26,26 @@ public class ProductRepositoryTests {
 	private long nonExistingId;
 
 	private long countTotalProducts;
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
-
 		existingId = 1L;
-
 		nonExistingId = 1000L;
-
 		countTotalProducts = 25L;
 	}
 	
 	//Teste para testar SE o metodo SAVE do REPOSITORY realmente 
 	//esta funcionando
+	//
 	@Test
 	public void saveShouldPersistWithAutoincrementWhenIdIsNull() {
-		
 		Product product = Factory.createProduct();
 		product.setId(null);
+
 		product = repository.save(product);
 		Optional<Product> result = repository.findById(product.getId());
 		
-		//chamando o ASSERTIONS para testarmos se o PRODUCT.GETID
-		//se esta com um valor de ID... Se estiver significa q
-		//deu certo e q foi salvo no BANCO...
 		Assertions.assertNotNull(product.getId());
-
 		Assertions.assertEquals(countTotalProducts + 1L, product.getId());
 		Assertions.assertTrue(result.isPresent());
 		Assertions.assertSame(result.get(), product);
@@ -61,9 +56,9 @@ public class ProductRepositoryTests {
 	//se ta funcionando
 	@Test
 	public void deleteShouldDeleteObjectWhenIdExists() {
-		repository.deleteById(existingId);
-		 
+		repository.deleteById(existingId);	 
 		Optional<Product> result = repository.findById(existingId);
+	
 		Assertions.assertFalse(result.isPresent());
 	}
 	

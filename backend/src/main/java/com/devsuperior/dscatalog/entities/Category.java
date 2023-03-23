@@ -20,42 +20,37 @@ import javax.persistence.Table;
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+
 	private Instant createdAt;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updatedAt;
 	
-	//fazendo o mapeamento em que uma CATEGORY tem um PRODUCT 
+//fazendo o mapeamento em que uma CATEGORY tem um PRODUCT 
 	//declarando um PRODUCT do tipo SET/CONJUNTO q ira receber os
 	//PRODUCT q faz parte dessa CATEGORY
 	//
 	//ANNOTATION @MANYTOMANY (muitos para muitos)
 	//e no MAPPEDBY nos estamos dizendo q e para fazer a ASSOCIACAO
-	//entre as o PRODUCT(q e essa classe) e o CATEGORY, no caso
-	//no passamos o nome CATEGORIES pois esse é o nome do SET do
-	//tipo CATEGORY q esta declarado dentro de PRODUCT
+	//entre as o PRODUCT(q e essa classe) e o CATEGORY
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
 	
-	
 	public Category() {
 	}
-
 
 	public Category(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-
-	//criando os GET e SET
 	public Long getId() {
 		return id;
 	}
