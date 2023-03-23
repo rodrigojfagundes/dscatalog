@@ -6,19 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
 
-
+//
+//
 //DTO é um OBJ q serve para FILTRAR transferencia de DADOS... Exemplo
 //temos um OBJ do tipo USER q tem NOME, IDADE, CPF, CEL, etc... Mas
 //queremos q seja transferido para o FRONT apenas o NOME e IDADE
 //dai usemos o USER_DTO... Vantagem é Controlar quais dados q vao ser
 //jogados para o RESOURCER/controlador, e assim da mais seguranca e 
 //economiza dados na REDE
-
+//
+//
 public class ProductDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -28,7 +28,6 @@ public class ProductDTO implements Serializable{
 	private Double price;
 	private String imgUrl;
 	private Instant date;
-
 	private List<CategoryDTO> categories = new ArrayList<>();
 	
 	
@@ -55,11 +54,14 @@ public class ProductDTO implements Serializable{
 		this.date = entity.getDate();
 	}
 	
- 
+
 	public ProductDTO(Product entity, Set<Category> categories) {
+
 		this(entity);
 		categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
 	}
+
+
 	public Long getId() {
 		return id;
 	}
@@ -127,5 +129,8 @@ public class ProductDTO implements Serializable{
 
 	public void setCategories(List<CategoryDTO> categories) {
 		this.categories = categories;
-	}	
+	}
+	
+	
+	
 }

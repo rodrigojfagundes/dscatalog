@@ -16,9 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
-
 @Entity
 @Table(name = "tb_product")
+
 public class Product implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -34,13 +34,6 @@ public class Product implements Serializable{
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant date;
 	
-	//para o PRODUCT estar associado com VARIAS CATEGORIAS
-	//vamos ter q declarar uma COLECAO de CATEGORIAS com
-	//o SET/CONJUNTO, pois o SET NAO aceita REPETICOES 
-	//(ao contrario da lista)
-	//
-	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
-	//no BANCO de MUITOS para MUITOS... 
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
 	joinColumns = @JoinColumn(name = "product_id"),
@@ -48,6 +41,7 @@ public class Product implements Serializable{
 			)
 	Set<Category> categories = new HashSet<>();
 	
+	//criando um construtor sem argumentos
 	public Product() {
 	}
 	
@@ -60,8 +54,7 @@ public class Product implements Serializable{
 		this.date = date;
 	}
 	
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -138,7 +131,7 @@ public class Product implements Serializable{
 		return categories;
 	}
 	
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
