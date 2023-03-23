@@ -1,7 +1,9 @@
 package com.devsuperior.dscatalog.dto;
 
 import com.devsuperior.dscatalog.services.validation.UserInsertValid;
-
+//a classe USERINSERTDTO vai HERDAR TUDO do USERDTO e alem disso
+//ela vai ter a SENHA do USER... Algo q o USERDTO nao tem
+//
 @UserInsertValid
 public class UserInsertDTO extends UserDTO {
 	private static final long serialVersionUID = 1L;

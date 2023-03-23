@@ -51,14 +51,17 @@ public class ProductServiceIT {
 		});
 	}
 	
-
+	
+	//testando o FINDALLPAGED
+	//passando uma PAGINA basica... pagina num 0 com 10 
+	//elementos por page
 	@Test
 	public void findAllPagedShouldReturnPageWhenPage0Size10() {
-
+		
 		PageRequest pageRequest = PageRequest.of(0, 10);
 
 		Page<ProductDTO> result = service.findAllPaged(pageRequest);
-
+		
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(0, result.getNumber());
 		Assertions.assertEquals(10, result.getSize());
@@ -67,7 +70,7 @@ public class ProductServiceIT {
 	
 	@Test
 	public void findAllPagedShouldReturnEmptyPageWhenPageDoesNotExist() {
-
+	
 		PageRequest pageRequest = PageRequest.of(50, 10);
 		
 		Page<ProductDTO> result = service.findAllPaged(pageRequest);
@@ -75,9 +78,12 @@ public class ProductServiceIT {
 		Assertions.assertTrue(result.isEmpty());
 	}
 	
+	
+	//testando se quando pedimos para buscar ordenado pelo o nome
+	//ele realmente esta buscando ordenado pelo nome
 	@Test
 	public void findAllPagedShouldReturnSortedPageWhenSortByName() {
-
+		
 		PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("name"));
 		
 		Page<ProductDTO> result = service.findAllPaged(pageRequest);

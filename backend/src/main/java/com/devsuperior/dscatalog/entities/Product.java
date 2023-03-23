@@ -33,14 +33,27 @@ public class Product implements Serializable {
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant date;
-
+	
+	//para o PRODUCT estar associado com VARIAS CATEGORIAS
+	//vamos ter q declarar uma COLECAO de CATEGORIAS com
+	//o SET/CONJUNTO, pois o SET NAO aceita REPETICOES 
+	//(ao contrario da lista)
+	//
+	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
+	//no BANCO de MUITOS para MUITOS... 
+	//e o ANNOTATION @JOINTABLE, e para criar uma TABELA q faz
+	//uma ASSOCIACAO entre as DUAS ENTIDADES (Categories e Products)
+	//primeiro argumento(name) o NOME da TABELA...
+	//JoinColumns e para dizer qual vai ser a chave ESTRANGEIRA de PRODUCT
+	//e o INVERSEJOINCOLUMN e para dizer qual a chave ESTRANGEIRA de CATEGORY
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
 		joinColumns = @JoinColumn(name = "product_id"),
 		inverseJoinColumns = @JoinColumn(name = "category_id"))	
+		
 
 	Set<Category> categories = new HashSet<>();
-
+	
 	public Product() {
 	}
 
@@ -52,7 +65,7 @@ public class Product implements Serializable {
 		this.imgUrl = imgUrl;
 		this.date = date;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -105,6 +118,7 @@ public class Product implements Serializable {
 		return categories;
 	}
 	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

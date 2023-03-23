@@ -36,10 +36,12 @@ import com.devsuperior.dscatalog.services.UserService;
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
-
 	@Autowired
 	private UserService service;
-
+	
+	//o @GETMAPPING e para dizer q o metodo FINDALL vai ser um METODO
+	//q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
+	//dados
 	@GetMapping
 	public ResponseEntity<Page<UserDTO>> findAll(
 			Pageable pageable) {
@@ -52,27 +54,38 @@ public class UserResource {
 	// da USUARIO
 	//
 	@GetMapping(value = "/{id}")
+	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
+	// responder a uma SOLICITAÇÂO feita atraves do navegador
+	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
+	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		UserDTO dto = service.findById(id);
-		
+
 		return ResponseEntity.ok().body(dto);
 	}
-
+	
 
 	// CADASTRANDO USER NO BANCO COM POST
 	//
+	//
+	// METODO POST RESTFUL para inserir no BANCO um novo usuario
+	// o RESPONSEENTITY e do tipo USERINSERTDTO, pois DPS de INSERIR
+	// nos vamos RETORNAR o nome do USER/userdto q foi inserido
+	// o nome do metodo vai ser INSERT
 	@PostMapping
 	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
 		UserDTO newDto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newDto.getId()).toUri();
-
+				
 		return ResponseEntity.created(uri).body(newDto);
 	}
 	
 	// METODO/ENDPOINT para ATUALIZAR um USER
 	//
-	//
+	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
+	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
+	// do USERUPDATEDTO/USER q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
 		UserDTO newDto = service.update(id, dto);
@@ -83,6 +96,9 @@ public class UserResource {
 
 	// METODO/ENDPOINT para DELETAR um USER
 	//
+	//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
+	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
+	//do USER q queremos DELETAR
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);

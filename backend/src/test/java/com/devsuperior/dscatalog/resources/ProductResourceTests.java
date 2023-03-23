@@ -68,7 +68,9 @@ public class ProductResourceTests {
 		
 		when(service.update(eq(existingId), any())).thenReturn(productDTO);
 		when(service.update(eq(nonExistingId), any())).thenThrow(ResourceNotFoundException.class);
-
+		
+		
+		//simulando o metodo DELETAR do PRODUCTSERVICE...
 		doNothing().when(service).delete(existingId);
 		doThrow(ResourceNotFoundException.class).when(service).delete(nonExistingId);
 		doThrow(DatabaseException.class).when(service).delete(dependentId);
@@ -144,7 +146,7 @@ public class ProductResourceTests {
 	
 	@Test
 	public void findAllShouldReturnPage() throws Exception {
-		
+
 		ResultActions result = 
 				mockMvc.perform(get("/products")
 					.accept(MediaType.APPLICATION_JSON));

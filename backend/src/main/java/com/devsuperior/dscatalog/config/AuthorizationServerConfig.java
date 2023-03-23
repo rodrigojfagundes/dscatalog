@@ -1,6 +1,7 @@
 package com.devsuperior.dscatalog.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +17,15 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-	//injetando os OBJ q vamos precisar
+	@Value("${security.oauth2.client.client-id}")
+	private String clientId;
+
+	@Value("${security.oauth2.client.client-secret}")
+	private String clientSecret;
+
+	@Value("${jwt.duration}")
+	private Integer jwtDuration;
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -28,7 +37,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+		
+
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 		security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
@@ -36,23 +46,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		//chamando o OBJ/VAR CLIENTS do tipo CLIENTDETAILSSERVICECONFIGURE 
-		//q com essse OBJ/var CLIENTS q nos vamos definir como sera a 
-		//AUTENTICACAO, e QUAIS SERAO OS DADOS DO CLIENTE
 		clients.inMemory()
-		.withClient("dscatalog")
-		.secret(passwordEncoder.encode("dscatalog123"))
+		.withClient(clientId)
+		.secret(passwordEncoder.encode(clientSecret))
 		.scopes("read", "write")
 		.authorizedGrantTypes("password")
-		.accessTokenValiditySeconds(86400);
+		.accessTokenValiditySeconds(jwtDuration);
 	}
 
-	//chamando o OBJ /VAR de nome ENDPOINTS do tipo 
-	//AUTHORIZATIONSERVERENDPOINTSCONFIGURER q ira servir para
-	//falarmos quem é q vai autorizar e qual vai ser o formato do TOKEN
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-
 		endpoints.authenticationManager(authenticationManager)
 		.tokenStore(tokenStore)
 		.accessTokenConverter(accessTokenConverter);
