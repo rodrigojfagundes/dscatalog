@@ -31,7 +31,7 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //do CATEGORYSERVICE é o SPRINGBOOT
 @Service
 public class CategoryService {
-	
+
 	@Autowired
 	private CategoryRepository repository;
 	
@@ -39,31 +39,32 @@ public class CategoryService {
 	public List<CategoryDTO> findAll(){
 
 		List<Category> list = repository.findAll();
-
+		
 		List<CategoryDTO> listDto = list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
 		return listDto;
 	}
 	
-	//
+	
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
 	//
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
-
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-
 		return new CategoryDTO(entity);
 	}
-
+	
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
-
+		//pegando o DTO do tipo CATEGORYDTO e converter para uma
+		//ENTIDADE, Um ENTITY do tipo CATEGORY
+		//
+		//criando uma variavel ENTITY do tipo CATEGORY
 		Category entity = new Category();
 		entity.setName(dto.getName());
+		
 		entity = repository.save(entity);
-
 		return new CategoryDTO(entity);
 	}
 	
@@ -71,10 +72,8 @@ public class CategoryService {
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
 		Category entity = repository.getOne(id);
-
 		entity.setName(dto.getName());
 		entity = repository.save(entity);
-
 		return new CategoryDTO(entity);
 		}
 
@@ -83,7 +82,6 @@ public class CategoryService {
 		}
 	}
 	
-	//criando um METODO para DELETAR uma CATEGORY
 	public void delete(Long id) {
 		try {
 		repository.deleteById(id);
@@ -91,7 +89,6 @@ public class CategoryService {
 		catch(EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
-
 		catch(DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
