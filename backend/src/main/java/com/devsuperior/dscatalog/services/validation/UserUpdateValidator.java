@@ -1,8 +1,4 @@
 package com.devsuperior.dscatalog.services.validation;
-//
-//
-//classe USERINSERTVALIDATOR q vai servir para IMPLEMENTAR a logica
-//da validacao, utilizando a BIBLIOTECA BEANS VALIDATION
 
 
 import java.util.ArrayList;
@@ -18,7 +14,7 @@ import com.devsuperior.dscatalog.entities.User;
 import com.devsuperior.dscatalog.repositories.UserRepository;
 import com.devsuperior.dscatalog.resources.exceptions.FieldMessage;
 
-public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserInsertDTO> {
+public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid, UserInsertDTO> {
 	
 	@Autowired
 	private UserRepository repository;
@@ -31,9 +27,8 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
 	public boolean isValid(UserInsertDTO dto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
-		
-		User user = repository.findByEmail(dto.getEmail());
 
+		User user = repository.findByEmail(dto.getEmail());
 		if (user != null) {
 
 			list.add(new FieldMessage("email", "Email ja existe"));

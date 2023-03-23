@@ -22,22 +22,22 @@ import com.devsuperior.dscatalog.entities.Product;
 //jogados para o RESOURCER/controlador, e assim da mais seguranca e 
 //economiza dados na REDE
 
-
 public class ProductDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	private Long id;
 
 	@Size(min = 5, max = 60, message = "Deve ter entre 5 e 60 caracteres")
 	@NotBlank(message = "campo requerido")
 	private String name;
+
 	@NotBlank(message = "campo requerido")
 	private String description;
 
 	@Positive(message = "Preco deve ser um valor positivo")
 	private Double price;
 	private String imgUrl;
-	
+
 	@PastOrPresent(message = "A data do produto nao pode ser futura")
 	private Instant date;
 	
@@ -45,7 +45,7 @@ public class ProductDTO implements Serializable {
 	//CATEGORY... Pois um produto pode ter VARIAS CATEGORIAS
 	//associação
 	private List<CategoryDTO> categories = new ArrayList<>();
-	
+
 	public ProductDTO() {
 	}	
 	

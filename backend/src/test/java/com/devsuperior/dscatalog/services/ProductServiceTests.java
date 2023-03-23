@@ -50,6 +50,7 @@ public class ProductServiceTests {
 	
 	@BeforeEach
 	void setUp() throws Exception {
+
 		existingId = 1L;
 		nonExistingId = 2L;
 		dependentId = 3L;
@@ -58,29 +59,21 @@ public class ProductServiceTests {
 
 		page = new PageImpl<>(List.of(product));
 		
-		//OBS: no mockito temos o (FACA A ACAO) ex: DONOTHING quando 
-		//acontecer isso WHEN (dai nos passamos um metodo tipo 
-		//DELETEBYID com um valor)
-		
 		Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(page);
-
 		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(product);
-		
 		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
 		Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
-		
 		Mockito.doNothing().when(repository).deleteById(existingId);
 		Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
 		Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
 	}
 	
-	//vamos fazer um TESTE de UNIDADE/CLASSE para testar o metodo FINDALLPAGED...
-	//q deve retornar uma PAGINA/PAGE de PRODUCTS
 	@Test
 	public void findAllPagedShouldReturnPage() {
 		Pageable pageable = PageRequest.of(0, 12);
 		
 		Page<ProductDTO> result = service.findAllPaged(pageable);
+		
 		Assertions.assertNotNull(result);
 		Mockito.verify(repository, times(1)).findAll(pageable);
 	}
@@ -97,14 +90,13 @@ public class ProductServiceTests {
 	
 	@Test
 	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-		
+
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.delete(nonExistingId);
 		});
-		
+
 		Mockito.verify(repository, times(1)).deleteById(nonExistingId);
 	}
-	
 	
 	@Test
 	public void deleteShouldDoNothingWhenIdExists() {
@@ -112,6 +104,7 @@ public class ProductServiceTests {
 		Assertions.assertDoesNotThrow(() -> {
 			service.delete(existingId);
 		});
+		
 		Mockito.verify(repository, times(1)).deleteById(existingId);
 	}
 }

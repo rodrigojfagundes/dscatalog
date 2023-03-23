@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.dscatalog.dto.RoleDTO;
 import com.devsuperior.dscatalog.dto.UserDTO;
 import com.devsuperior.dscatalog.dto.UserInsertDTO;
+import com.devsuperior.dscatalog.dto.UserUpdateDTO;
 import com.devsuperior.dscatalog.entities.Role;
 import com.devsuperior.dscatalog.entities.User;
 import com.devsuperior.dscatalog.repositories.RoleRepository;
@@ -28,15 +29,13 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE USERREPOSITORY (repository)
+//
 @Service
 public class UserService {
 	
-	//injetando o BCRIPT(q ta no APPCONFIG) e serve para CRIPTOGRAFAR
-	//senhas
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
-
 	@Autowired
 	private UserRepository repository;
 
@@ -54,22 +53,21 @@ public class UserService {
 		//FINDALL...
 		//
 		Page<User> list = repository.findAll(pageable);
+		
 		return list.map(x -> new UserDTO(x));
 		//return listDto;
 	}
 	
 	//
-	//
-	//metodo FINDBYID q busca uma determinado USER conforme o ID
+	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
-	//
 	//
 	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
 		//chamando o OBJ REPOSITORY que é o OBJ da classe USERREPOSITORY
 		//e essa classe é a responsavel por ACESSO AO BANCO
 		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
-		//do tipo USER
+		//do tipo PRODUCT
 		Optional<User> obj = repository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 
@@ -83,17 +81,19 @@ public class UserService {
 		User entity = new User();
 		copyDtoToEntity(dto, entity);
 		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
-		
 		//para SALVAR no BANCO
+		//vamos chamar o REPOSITORY q é um OBJ do tipo USERREPOSITORY
+		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
+		//na nossa VAR ENTITY q é do tipo USER
 		entity = repository.save(entity);
-	
+
 		return new UserDTO(entity);
 	}
 	
 	//metodo do TIPO USERDTO de nome UPDATE para ATUALIZAR
 	//os valores de um USERDTO no BANCO
 	@Transactional
-	public UserDTO update(Long id, UserDTO dto) {
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 			User entity = repository.getOne(id);
 			copyDtoToEntity(dto, entity);			
@@ -101,7 +101,9 @@ public class UserService {
 
 			return new UserDTO(entity);
 		}
+
 		catch (EntityNotFoundException e) {
+
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
 	}
@@ -119,6 +121,7 @@ public class UserService {
 		}
 	}
 	
+	//
 	//Metodo para converter de USERDTO para USER
 	private void copyDtoToEntity(UserDTO dto, User entity) {
 
@@ -127,7 +130,6 @@ public class UserService {
 		entity.setEmail(dto.getEmail());
 		
 		entity.getRoles().clear();
-
 		for (RoleDTO roleDto : dto.getRoles()) {
 			Role role = roleRepository.getOne(roleDto.getId());
 

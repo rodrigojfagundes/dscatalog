@@ -28,8 +28,12 @@ public class UserDTO implements Serializable {
 	@Email(message = "Favor entrar um email valido")
 	private String email;
 	
-	Set<RoleDTO> roles = new HashSet<>();
 	
+	//criando um SET/CONJUNTO do tipo ROLEDTO
+	//pois no JSON nos vamos transitar os dados do usuario
+	//e junto as permisoes dele
+	Set<RoleDTO> roles = new HashSet<>();
+
 	public UserDTO() {
 	}
 	
@@ -40,11 +44,6 @@ public class UserDTO implements Serializable {
 		this.email = email;
 	}
 	
-	
-	
-	//criando um construtor com a ENTIDADE/CLASSE USER
-	//pois assim sera mais facil para converter de
-	//USER para USERDTO :)
 	public UserDTO(User entity) {
 		this.id = entity.getId();
 		this.firstName = entity.getFirstName();
@@ -55,7 +54,6 @@ public class UserDTO implements Serializable {
 		
 	}
 	
-
 	public Long getId() {
 		return id;
 	}
@@ -99,4 +97,5 @@ public class UserDTO implements Serializable {
 	public Set<RoleDTO> getRoles() {
 		return roles;
 	}
+
 }

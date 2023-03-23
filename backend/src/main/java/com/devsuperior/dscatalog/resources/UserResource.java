@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.devsuperior.dscatalog.dto.UserDTO;
 import com.devsuperior.dscatalog.dto.UserInsertDTO;
+import com.devsuperior.dscatalog.dto.UserUpdateDTO;
 import com.devsuperior.dscatalog.services.UserService;
 
 
@@ -46,7 +47,7 @@ public class UserResource {
 	public ResponseEntity<Page<UserDTO>> findAll(
 			Pageable pageable) {
 		Page<UserDTO> list = service.findAllPaged(pageable);	
-	
+
 		return ResponseEntity.ok().body(list);
 	}
 	
@@ -65,9 +66,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
-
 	// CADASTRANDO USER NO BANCO COM POST
-	//
 	//
 	// METODO POST RESTFUL para inserir no BANCO um novo usuario
 	// o RESPONSEENTITY e do tipo USERINSERTDTO, pois DPS de INSERIR
@@ -82,15 +81,15 @@ public class UserResource {
 		return ResponseEntity.created(uri).body(newDto);
 	}
 	
-	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
+
+	// METODO/ENDPOINT para ATUALIZAR um USER
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
-	// do USER q queremos ATUALIZAR
-	//
+	// do USERUPDATEDTO/USER q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
-		dto = service.update(id, dto);
+	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
+		UserDTO newDto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(dto);
 	}
@@ -102,7 +101,7 @@ public class UserResource {
 	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
 	//do USER q queremos DELETAR
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) { 
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();

@@ -34,7 +34,7 @@ import com.devsuperior.dscatalog.services.ProductService;
 @RestController
 @RequestMapping(value = "/products")
 public class ProductResource {
-	
+
 	@Autowired
 	private ProductService service;
 	
@@ -52,6 +52,7 @@ public class ProductResource {
 	//
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
+	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -59,12 +60,12 @@ public class ProductResource {
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
 		ProductDTO dto = service.findById(id);
-
+		
 		return ResponseEntity.ok().body(dto);
 	}
 	
-
 	// CADASTRANDO PRODUCT NO BANCO COM POST
+	//
 	//
 	// METODO POST RESTFUL para inserir no BANCO um novo produto
 	// o RESPONSEENTITY e do tipo PRODUCTDTO, pois DPS de INSERIR
@@ -79,6 +80,7 @@ public class ProductResource {
 		return ResponseEntity.created(uri).body(dto);
 	}
 	
+	//
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
