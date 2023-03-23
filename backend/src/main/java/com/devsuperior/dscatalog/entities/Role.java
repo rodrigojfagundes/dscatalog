@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 //classe/entidade ROLE que é a responsavel por ter os PERFIS(niveis)
 //de USER(usuario), o perfil OPERADOR e ADMIN
+//
 @Entity
 @Table(name = "tb_role")
 public class Role implements Serializable{
@@ -23,6 +24,7 @@ public class Role implements Serializable{
 	
 	public Role() {
 	}
+	
 
 	public Role(Long id, String authority) {
 		super();
@@ -50,7 +52,6 @@ public class Role implements Serializable{
 		this.authority = authority;
 	}
 	
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

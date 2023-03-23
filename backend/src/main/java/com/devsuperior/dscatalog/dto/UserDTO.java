@@ -18,7 +18,7 @@ import com.devsuperior.dscatalog.entities.User;
 
 public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 
 	@NotBlank(message = "Campo obrigatorio")
@@ -28,21 +28,19 @@ public class UserDTO implements Serializable {
 	@Email(message = "Favor entrar um email valido")
 	private String email;
 	
-	
-	//criando um SET/CONJUNTO do tipo ROLEDTO
-	//pois no JSON nos vamos transitar os dados do usuario
-	//e junto as permisoes dele
 	Set<RoleDTO> roles = new HashSet<>();
-
+	
 	public UserDTO() {
 	}
 	
+
 	public UserDTO(Long id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 	}
+	
 	
 	public UserDTO(User entity) {
 		this.id = entity.getId();
@@ -53,6 +51,7 @@ public class UserDTO implements Serializable {
 		entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
 		
 	}
+	
 	
 	public Long getId() {
 		return id;

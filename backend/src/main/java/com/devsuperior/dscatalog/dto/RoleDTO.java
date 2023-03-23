@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.devsuperior.dscatalog.entities.Role;
 
+
 public class RoleDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -12,19 +13,21 @@ public class RoleDTO implements Serializable {
 	
 	public RoleDTO() {
 	}
-	
+
 	public RoleDTO(Long id, String authority) {
 		super();
 		this.id = id;
 		this.authority = authority;
 	}
 	
-
+	
 	public RoleDTO(Role role) {
 		id = role.getId();
 		authority = role.getAuthority();
 	}
 	
+	
+	//criando os GET e SET
 	public Long getId() {
 		return id;
 	}

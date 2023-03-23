@@ -32,7 +32,7 @@ import com.devsuperior.dscatalog.services.CategoryService;
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
-	
+
 	@Autowired
 	private CategoryService service;
 	
@@ -41,16 +41,14 @@ public class CategoryResource {
 	// dados
 	@GetMapping
 	public ResponseEntity<Page<CategoryDTO>> findAll(
-			Pageable pageable) {	
+			Pageable pageable) {		
 		Page<CategoryDTO> list = service.findAllPaged(pageable);
-	
+
 		return ResponseEntity.ok().body(list);
 	}
 	
-	//
 	// criando um METODO/ENDPOINT para retornar uma CATEGORIA pelo o ID
 	// da CATEGORIA
-	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -58,42 +56,39 @@ public class CategoryResource {
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
 		CategoryDTO dto = service.findById(id);
-		
+
 		return ResponseEntity.ok().body(dto);
 	}
 	
-
 	// CADASTRANDO CATEGORY NO BANCO COM POST
 	//
 	// METODO POST RESTFUL para inserir no BANCO uma nova categoria
 	// o RESPONSEENTITY e do tipo CATEGORYDTO, pois DPS de INSERIR
 	// nos vamos RETORNAR o nome da CATEGORY/categorydto q foi inserido
 	// o nome do metodo vai ser INSERT
-
 	@PostMapping
 	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
-
 		dto = service.insert(dto);
+		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(dto);
 	}
 	
-
+	//
 	// METODO/ENDPOINT para ATUALIZAR uma CATEGORIA
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
 	// da CATEGORY q queremos ATUALIZAR
-	//
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto) {
 		dto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(dto);
 	}
-	
+
 	//Metodo restful delete
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 

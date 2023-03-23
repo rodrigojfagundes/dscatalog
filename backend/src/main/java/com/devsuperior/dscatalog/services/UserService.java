@@ -29,7 +29,6 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE USERREPOSITORY (repository)
-//
 @Service
 public class UserService {
 	
@@ -41,8 +40,7 @@ public class UserService {
 
 	@Autowired
 	private RoleRepository roleRepository;
-	
-	
+		
 	//criando um METODO do tipo PAGE de USERDTO
 	//q vamos chamar de FINDALLPAGED q recebe um PEGEABLE
 	@Transactional(readOnly = true)
@@ -53,7 +51,7 @@ public class UserService {
 		//FINDALL...
 		//
 		Page<User> list = repository.findAll(pageable);
-		
+
 		return list.map(x -> new UserDTO(x));
 		//return listDto;
 	}
@@ -70,7 +68,7 @@ public class UserService {
 		//do tipo PRODUCT
 		Optional<User> obj = repository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-
+		
 		return new UserDTO(entity);
 	}
 	
@@ -82,9 +80,6 @@ public class UserService {
 		copyDtoToEntity(dto, entity);
 		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
 		//para SALVAR no BANCO
-		//vamos chamar o REPOSITORY q é um OBJ do tipo USERREPOSITORY
-		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
-		//na nossa VAR ENTITY q é do tipo USER
 		entity = repository.save(entity);
 
 		return new UserDTO(entity);
@@ -96,14 +91,12 @@ public class UserService {
 	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 			User entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);			
+			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
 
 			return new UserDTO(entity);
 		}
-
 		catch (EntityNotFoundException e) {
-
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
 	}
@@ -121,15 +114,13 @@ public class UserService {
 		}
 	}
 	
-	//
 	//Metodo para converter de USERDTO para USER
 	private void copyDtoToEntity(UserDTO dto, User entity) {
-
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
-		entity.setEmail(dto.getEmail());
-		
+		entity.setEmail(dto.getEmail());		
 		entity.getRoles().clear();
+
 		for (RoleDTO roleDto : dto.getRoles()) {
 			Role role = roleRepository.getOne(roleDto.getId());
 

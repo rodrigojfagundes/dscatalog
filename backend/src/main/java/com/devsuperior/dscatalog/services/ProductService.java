@@ -46,12 +46,12 @@ public class ProductService {
 		//FINDALL...
 		//
 		Page<Product> list = repository.findAll(pageable);
+
 		return list.map(x -> new ProductDTO(x));
 		//return listDto;
 	}
 	
-	//
-	//
+
 	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
 	//
@@ -69,12 +69,8 @@ public class ProductService {
 	public ProductDTO insert(ProductDTO dto) {
 
 		Product entity = new Product();
-
 		copyDtoToEntity(dto, entity);
 		//para SALVAR no BANCO
-		//vamos chamar o REPOSITORY q é um OBJ do tipo PRODUCTREPOSITORY
-		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
-		//na nossa VAR ENTITY q é do tipo USER
 		entity = repository.save(entity);
 
 		return new ProductDTO(entity);
@@ -87,12 +83,11 @@ public class ProductService {
 	public ProductDTO update(Long id, ProductDTO dto) {
 		try {
 			Product entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);
+			copyDtoToEntity(dto, entity);			
 			entity = repository.save(entity);
-			
+
 			return new ProductDTO(entity);
 		}
-
 		catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
@@ -121,7 +116,6 @@ public class ProductService {
 		entity.setPrice(dto.getPrice());
 		
 		entity.getCategories().clear();
-
 		for (CategoryDTO catDto : dto.getCategories()) {
 			Category category = categoryRepository.getOne(catDto.getId());
 

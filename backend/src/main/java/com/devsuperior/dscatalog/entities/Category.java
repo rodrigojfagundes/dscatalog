@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,8 +31,9 @@ public class Category implements Serializable {
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 
 	private Instant createdAt;
-	
+
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+
 	private Instant updatedAt;
 	
 	//fazendo o mapeamento em que uma CATEGORY tem um PRODUCT 
@@ -46,7 +47,7 @@ public class Category implements Serializable {
 	//tipo CATEGORY q esta declarado dentro de PRODUCT
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
-	
+
 	public Category() {
 	}
 
@@ -54,6 +55,7 @@ public class Category implements Serializable {
 		this.id = id;
 		this.name = name;
 	}
+
 
 	public Long getId() {
 		return id;

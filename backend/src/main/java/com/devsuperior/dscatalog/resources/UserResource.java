@@ -51,7 +51,6 @@ public class UserResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	//
 	// criando um METODO/ENDPOINT para retornar um USUARIO pelo o ID
 	// da USUARIO
 	//
@@ -60,12 +59,13 @@ public class UserResource {
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
 	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
-	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {	
 		UserDTO dto = service.findById(id);
-		
+	
 		return ResponseEntity.ok().body(dto);
 	}
 	
+
 	// CADASTRANDO USER NO BANCO COM POST
 	//
 	// METODO POST RESTFUL para inserir no BANCO um novo usuario
@@ -81,19 +81,19 @@ public class UserResource {
 		return ResponseEntity.created(uri).body(newDto);
 	}
 	
-
+	//
 	// METODO/ENDPOINT para ATUALIZAR um USER
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
 	// do USERUPDATEDTO/USER q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
+
 	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
 		UserDTO newDto = service.update(id, dto);
 
-		return ResponseEntity.ok().body(dto);
+		return ResponseEntity.ok().body(newDto);
 	}
-
 
 	// METODO/ENDPOINT para DELETAR um USER
 	//
@@ -101,7 +101,7 @@ public class UserResource {
 	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
 	//do USER q queremos DELETAR
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();

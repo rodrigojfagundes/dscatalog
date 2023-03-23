@@ -44,15 +44,14 @@ public class ProductResource {
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> findAll(
 			Pageable pageable) {
+
 		Page<ProductDTO> list = service.findAllPaged(pageable);	
 
 		return ResponseEntity.ok().body(list);
 	}
 	
-	//
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
-	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -65,7 +64,6 @@ public class ProductResource {
 	}
 	
 	// CADASTRANDO PRODUCT NO BANCO COM POST
-	//
 	//
 	// METODO POST RESTFUL para inserir no BANCO um novo produto
 	// o RESPONSEENTITY e do tipo PRODUCTDTO, pois DPS de INSERIR

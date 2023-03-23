@@ -18,18 +18,21 @@ import com.devsuperior.dscatalog.repositories.CategoryRepository;
 import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
+
 //classe CATEGORYSERVICE, ela recebe a SOLICITAÇÂO da classe
 //CATEGORYRESOURCE, e ela CATEGORYSERVICE executa os metodos
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE CATEGORYREPOSITORY (repository)
-//
+
 @Service
 public class CategoryService {
-
+	
 	@Autowired
 	private CategoryRepository repository;
-
+	
+	//criando um METODO do tipo PAGE de CATEGORYDTO
+	//q vamos chamar de FINDALLPAGED q recebe um PAGEABLE
 	@Transactional(readOnly = true)
 	public Page<CategoryDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
@@ -38,7 +41,6 @@ public class CategoryService {
 		//FINDALL...
 		//
 		Page<Category> list = repository.findAll(pageable);
-
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
@@ -49,9 +51,9 @@ public class CategoryService {
 	//
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
+		//chamando o OBJ REPOSITORY que é o OBJ da classe CATEGORYREPOSITORY
+		//e essa classe é a responsavel por ACESSO AO BANCO
 		Optional<Category> obj = repository.findById(id);
-		//OBS: Objeto OPTIONAL é uma tecnologia q serve para EVITAR
-		//trabalhar com VALORES NULO
 		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 
 		return new CategoryDTO(entity);
@@ -64,6 +66,9 @@ public class CategoryService {
 		Category entity = new Category();
 		entity.setName(dto.getName());
 		//para SALVAR no BANCO
+		//vamos chamar o REPOSITORY q é um OBJ do tipo CATEGORYREPOSITORY
+		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
+		//na nossa VAR ENTITY q é do tipo CATEGORY
 		entity = repository.save(entity);
 
 		return new CategoryDTO(entity);
@@ -77,6 +82,7 @@ public class CategoryService {
 			Category entity = repository.getOne(id);
 			entity.setName(dto.getName());
 			entity = repository.save(entity);
+
 			return new CategoryDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
