@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+//classe/entidade ROLE que é a responsavel por ter os PERFIS(niveis)
+//de USER(usuario), o perfil OPERADOR e ADMIN
  
 @Entity
 @Table(name = "tb_role")
@@ -17,11 +20,10 @@ public class Role implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String authority;
-
+	
 	public Role() {
 	}
 	
-
 	public Role(Long id, String authority) {
 		super();
 		this.id = id;

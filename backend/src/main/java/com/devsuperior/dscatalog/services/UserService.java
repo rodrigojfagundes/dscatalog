@@ -42,6 +42,9 @@ public class UserService {
 	@Autowired
 	private RoleRepository roleRepository;
 	
+	
+	//criando um METODO do tipo PAGE de USERDTO
+	//q vamos chamar de FINDALLPAGED q recebe um PEGEABLE
 	@Transactional(readOnly = true)
 	public Page<UserDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
@@ -56,18 +59,15 @@ public class UserService {
 	}
 	
 	//
-	//
 	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
 	//
 	//
 	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
-		//chamando o OBJ REPOSITORY que é o OBJ da classe USERREPOSITORY
-		//e essa classe é a responsavel por ACESSO AO BANCO
 		Optional<User> obj = repository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		
+
 		return new UserDTO(entity);
 	}
 	
@@ -75,6 +75,10 @@ public class UserService {
 	//no BANCO
 	@Transactional
 	public UserDTO insert(UserInsertDTO dto) {
+		//pegando o DTO do tipo USERDTO e converter para uma
+		//ENTIDADE, Um ENTITY do tipo USER
+		//
+		//criando uma variavel ENTITY do tipo USER
 		User entity = new User();
 		copyDtoToEntity(dto, entity);
 
@@ -95,19 +99,17 @@ public class UserService {
 	public UserDTO update(Long id, UserDTO dto) {
 		try {
 			User entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);
-			//agora vamos SALVAR o ENTITY é q um PRODUCT no banco,
-			//dessa forma nos ATUALIZAMOS o valor do PRODUCT q tinha no BANCO
+			copyDtoToEntity(dto, entity);		
 			entity = repository.save(entity);
-
+	
 			return new UserDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
+	
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
 	}
-	
-	//criando um METODO para DELETAR um PRODUCT
+
 	public void delete(Long id) {
 
 		try {
@@ -121,7 +123,8 @@ public class UserService {
 		}
 	}
 	
-
+	//
+	//
 	//criando um metodo AUXILIAR de nome COPYDTOTOENTITY para pegar 
 	//as INFORMACOES/ATRIBUTOS q estao no USERDTO e passar para o
 	//ENTITY que é uma VAR/OBJ do tipo USER
@@ -135,7 +138,6 @@ public class UserService {
 
 		for (RoleDTO roleDto : dto.getRoles()) {
 			Role role = roleRepository.getOne(roleDto.getId());
-
 			entity.getRoles().add(role);		
 		}
 	}	

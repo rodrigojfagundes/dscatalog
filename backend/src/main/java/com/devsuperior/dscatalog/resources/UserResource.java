@@ -16,89 +16,91 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.devsuperior.dscatalog.dto.CategoryDTO;
-import com.devsuperior.dscatalog.services.CategoryService;
+import com.devsuperior.dscatalog.dto.UserDTO;
+import com.devsuperior.dscatalog.dto.UserInsertDTO;
+import com.devsuperior.dscatalog.services.UserService;
 
 
 //classe para fazer chamada dos RECURSOS REST dos OBJETOS do tipo
-//CATEGORY... Ou seja quando o JAVASCRIPT q ta rodando no FRONT
-//requisitar as CATEGORIAS, ele o JS vai chamar os metodos dessa
-//classe aqui, a classe CATEGORYRESOURCE, e ESSA CLASSE chama
-//a classe CATEGORYSERVICE, q roda os METODOS solicitados
+//USER... Ou seja quando o JAVASCRIPT q ta rodando no FRONT
+//requisitar os PRODUTOS, ele o JS vai chamar os metodos dessa
+//classe aqui, a classe USERRESOURCE, e ESSA CLASSE chama
+//a classe USERSERVICE, q roda os METODOS solicitados
 //
 //para dizer q essa classe é um CONTROLADOR REST, vamos por o
 //@RESTCONTROLLER... e o @RequestMapping e para dizer qual a ROTA
-//do recurso... ou seja (localhost:8080/categories)
+//do recurso... ou seja (localhost:8080/users)
 @RestController
-@RequestMapping(value = "/categories")
-public class CategoryResource {
+@RequestMapping(value = "/users")
+public class UserResource {
 	
 	@Autowired
-	private CategoryService service;
+	private UserService service;
 	
-	// o @GETMAPPING e para dizer q o metodo FINDALL vai ser um METODO
-	// q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
-	// dados
+	//o @GETMAPPING e para dizer q o metodo FINDALL vai ser um METODO
+	//q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
+	//dados
 	@GetMapping
-	public ResponseEntity<Page<CategoryDTO>> findAll(
+	
+	public ResponseEntity<Page<UserDTO>> findAll(
 			Pageable pageable) {
-		
-		Page<CategoryDTO> list = service.findAllPaged(pageable);
-
+		Page<UserDTO> list = service.findAllPaged(pageable);	
+	
 		return ResponseEntity.ok().body(list);
 	}
 	
-	//
-	// criando um METODO/ENDPOINT para retornar uma CATEGORIA pelo o ID
-	// da CATEGORIA
+	
+	// criando um METODO/ENDPOINT para retornar um USUARIO pelo o ID
+	// da USUARIO
 	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
 	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
-	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
-		CategoryDTO dto = service.findById(id);
-		
+	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+		UserDTO dto = service.findById(id);
+
 		return ResponseEntity.ok().body(dto);
 	}
 	
 
-	// CADASTRANDO CATEGORY NO BANCO COM POST
+	// CADASTRANDO USER NO BANCO COM POST
 	//
-	//
-
-	// METODO POST RESTFUL para inserir no BANCO uma nova categoria
-	// o RESPONSEENTITY e do tipo CATEGORYDTO, pois DPS de INSERIR
-	// nos vamos RETORNAR o nome da CATEGORY/categorydto q foi inserido
-	// o nome do metodo vai ser INSERT
 	@PostMapping
-	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
-		dto = service.insert(dto);
+	public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto) {
+		UserDTO newDto = service.insert(dto);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(dto.getId()).toUri();
+				.buildAndExpand(newDto.getId()).toUri();
 
-		return ResponseEntity.created(uri).body(dto);
+		return ResponseEntity.created(uri).body(newDto);
 	}
 	
 	//
-	// METODO/ENDPOINT para ATUALIZAR uma CATEGORIA
+	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
-	// da CATEGORY q queremos ATUALIZAR
-	//
+	// do USER q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto) {
+	public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO dto) {
 		dto = service.update(id, dto);
+
 		return ResponseEntity.ok().body(dto);
 	}
 
+
+	// METODO/ENDPOINT para DELETAR um USER
+	//
+	//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
+	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
+	//do USER q queremos DELETAR
+	//
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();
 	}
-} 
+}
