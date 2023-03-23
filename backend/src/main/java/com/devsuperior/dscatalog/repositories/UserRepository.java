@@ -12,9 +12,9 @@ import com.devsuperior.dscatalog.entities.User;
 	//e essa interface HERDA de JPAREPOSITORY para se conectar
 	//ao BANCO, o JPAREPOSITORY recebe um TIPO da ENTIDADE
 	//no caso USER, e um ID, q vai ser no formato LONG
+	//
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-	
-	//criando um metodo q busca o USER pelo o EMAIL
+
 	User findByEmail(String email);
 }

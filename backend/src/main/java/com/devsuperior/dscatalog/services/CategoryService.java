@@ -24,7 +24,6 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE CATEGORYREPOSITORY (repository)
-
 @Service
 public class CategoryService {
 	
@@ -53,6 +52,8 @@ public class CategoryService {
 	public CategoryDTO findById(Long id) {
 		//chamando o OBJ REPOSITORY que é o OBJ da classe CATEGORYREPOSITORY
 		//e essa classe é a responsavel por ACESSO AO BANCO
+		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
+		//do tipo CATEGORY
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 
@@ -63,12 +64,10 @@ public class CategoryService {
 	//no BANCO
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
+
 		Category entity = new Category();
 		entity.setName(dto.getName());
 		//para SALVAR no BANCO
-		//vamos chamar o REPOSITORY q é um OBJ do tipo CATEGORYREPOSITORY
-		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
-		//na nossa VAR ENTITY q é do tipo CATEGORY
 		entity = repository.save(entity);
 
 		return new CategoryDTO(entity);
@@ -76,6 +75,7 @@ public class CategoryService {
 	
 	//metodo do TIPO CATEGORYDTO de nome UPDATE para ATUALIZAR
 	//os valores de uma CATEGORYDTO/category no BANCO
+	//
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {

@@ -23,9 +23,8 @@ import com.devsuperior.dscatalog.entities.Product;
 
 public class ProductDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private Long id;
 
+	private Long id;
 	@Size(min = 5, max = 60, message = "Deve ter entre 5 e 60 caracteres")
 	@NotBlank(message = "campo requerido")
 	private String name;
@@ -41,7 +40,7 @@ public class ProductDTO implements Serializable {
 	private Instant date;
 	
 	private List<CategoryDTO> categories = new ArrayList<>();
-
+	
 	public ProductDTO() {
 	}	
 	
@@ -53,9 +52,8 @@ public class ProductDTO implements Serializable {
 		this.imgUrl = imgUrl;
 		this.date = date;
 	}
-
+	
 	public ProductDTO(Product entity) {
-
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.description = entity.getDescription();
@@ -63,9 +61,10 @@ public class ProductDTO implements Serializable {
 		this.imgUrl = entity.getImgUrl();
 		this.date = entity.getDate();
 	}
- 
+	 
 	public ProductDTO(Product entity, Set<Category> categories) {
 		this(entity);
+
 		categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
 	}
 	

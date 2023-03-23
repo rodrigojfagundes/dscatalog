@@ -36,7 +36,7 @@ import com.devsuperior.dscatalog.services.UserService;
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
-
+	
 	@Autowired
 	private UserService service;
 	
@@ -44,8 +44,10 @@ public class UserResource {
 	//q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
 	//dados
 	@GetMapping
+
 	public ResponseEntity<Page<UserDTO>> findAll(
 			Pageable pageable) {
+
 		Page<UserDTO> list = service.findAllPaged(pageable);	
 
 		return ResponseEntity.ok().body(list);
@@ -59,7 +61,7 @@ public class UserResource {
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
 	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
-	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {	
+	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		UserDTO dto = service.findById(id);
 	
 		return ResponseEntity.ok().body(dto);
@@ -77,23 +79,22 @@ public class UserResource {
 		UserDTO newDto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newDto.getId()).toUri();
-		
+
 		return ResponseEntity.created(uri).body(newDto);
 	}
 	
-	//
 	// METODO/ENDPOINT para ATUALIZAR um USER
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
 	// do USERUPDATEDTO/USER q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
-
 	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
 		UserDTO newDto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(newDto);
 	}
+
 
 	// METODO/ENDPOINT para DELETAR um USER
 	//
@@ -106,4 +107,4 @@ public class UserResource {
 
 		return ResponseEntity.noContent().build();
 	}
-} 
+}

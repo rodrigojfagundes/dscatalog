@@ -20,7 +20,6 @@ public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-
 	@NotBlank(message = "Campo obrigatorio")
 	private String firstName;
 	private String lastName;
@@ -29,11 +28,10 @@ public class UserDTO implements Serializable {
 	private String email;
 	
 	Set<RoleDTO> roles = new HashSet<>();
-	
+
 	public UserDTO() {
 	}
 	
-
 	public UserDTO(Long id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
@@ -52,7 +50,7 @@ public class UserDTO implements Serializable {
 		
 	}
 	
-	
+
 	public Long getId() {
 		return id;
 	}

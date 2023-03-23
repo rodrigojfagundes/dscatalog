@@ -21,12 +21,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 //Classe para fazer teste de integracao (IT) da camada web ate 
 //o banco de dados
-
+ 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 public class ProductResourceIT {
-
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -45,9 +44,11 @@ public class ProductResourceIT {
 		countTotalProducts = 25L;
 	}
 	
+	//testando se o o metodo FINDALL ta vindo ordenado por nome
+	//quando e pedido
 	@Test
 	public void findAllShouldReturnSortedPageWhenSortByName() throws Exception {
-		
+
 		ResultActions result = 
 				mockMvc.perform(get("/products?page=0&size=12&sort=name,asc")
 					.accept(MediaType.APPLICATION_JSON));

@@ -26,6 +26,7 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE PRODUCTREPOSITORY (repository)
+
 @Service
 public class ProductService {
 
@@ -44,19 +45,22 @@ public class ProductService {
 		//PRODUCTREPOSITORY e como ele o PRODUCTREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
-		//
 		Page<Product> list = repository.findAll(pageable);
 
 		return list.map(x -> new ProductDTO(x));
 		//return listDto;
 	}
 	
-
+	//
 	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
 	//
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
+		//chamando o OBJ REPOSITORY que é o OBJ da classe PRODUCTREPOSITORY
+		//e essa classe é a responsavel por ACESSO AO BANCO
+		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
+		//do tipo PRODUCT
 		Optional<Product> obj = repository.findById(id);
 		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		
@@ -67,7 +71,6 @@ public class ProductService {
 	//no BANCO
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
-
 		Product entity = new Product();
 		copyDtoToEntity(dto, entity);
 		//para SALVAR no BANCO
@@ -82,13 +85,14 @@ public class ProductService {
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
 		try {
-			Product entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);			
+			Product entity = repository.getOne(id);	
+			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
 
 			return new ProductDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
+
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
 	}
@@ -106,7 +110,10 @@ public class ProductService {
 		}
 	}
 	
-	//Metodo para converter de PRODUCTDTO para PRODUCT
+
+	//criando um metodo AUXILIAR de nome COPYDTOTOENTITY para pegar 
+	//as INFORMACOES/ATRIBUTOS q estao no PRODUCTDTO e passar para o
+	//ENTITY que é uma VAR/OBJ do tipo PRODUCT
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
 
 		entity.setName(dto.getName());
@@ -116,6 +123,7 @@ public class ProductService {
 		entity.setPrice(dto.getPrice());
 		
 		entity.getCategories().clear();
+
 		for (CategoryDTO catDto : dto.getCategories()) {
 			Category category = categoryRepository.getOne(catDto.getId());
 
