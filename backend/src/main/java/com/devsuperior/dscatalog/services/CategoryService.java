@@ -31,13 +31,14 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository repository;
 	
+	//criando um METODO do tipo PAGE de CATEGORYDTO
+	//q vamos chamar de FINDALLPAGED q recebe um PAGEABLE
 	@Transactional(readOnly = true)
 	public Page<CategoryDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
 		//CATEGORYREPOSITORY e como ele o CATEGORYREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
-		//
 		Page<Category> list = repository.findAll(pageable);
 
 		return list.map(x -> new CategoryDTO(x));
@@ -56,7 +57,7 @@ public class CategoryService {
 		//do tipo CATEGORY
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		
+
 		return new CategoryDTO(entity);
 	}
 	
@@ -66,7 +67,6 @@ public class CategoryService {
 	public CategoryDTO insert(CategoryDTO dto) {
 
 		Category entity = new Category();
-
 		entity.setName(dto.getName());
 		//para SALVAR no BANCO
 		entity = repository.save(entity);
@@ -78,18 +78,14 @@ public class CategoryService {
 	//os valores de uma CATEGORYDTO/category no BANCO
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
-	
 		try {
-			Category entity = repository.getOne(id);
+			Category entity = repository.getOne(id);	
 			entity.setName(dto.getName());
-	
 			entity = repository.save(entity);
 
 			return new CategoryDTO(entity);
 		}
-
 		catch (EntityNotFoundException e) {
-
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
 	}
@@ -100,7 +96,6 @@ public class CategoryService {
 			repository.deleteById(id);
 		}
 		catch (EmptyResultDataAccessException e) {
-
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
 		catch (DataIntegrityViolationException e) {

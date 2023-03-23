@@ -26,22 +26,16 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE PRODUCTREPOSITORY (repository)
+//
 @Service
 public class ProductService {
 
-	//criando uma DEPEDENCIA/VARIAVEL do tipo
-	//PRODUCTREPOSITORY de nome REPOSITORY
-	//e com o ANNOTATION @Autowired serve para INJETAR AUTOMATICAMENTE
-	//uma INSTANCIA gerenciada pelo SPRINGBOOT
 	@Autowired
 	private ProductRepository repository;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	
-	//criando um METODO do tipo PAGE de PRODUCTDTO
-	//q vamos chamar de FINDALLPAGED q recebe um PEGEABLE
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
@@ -60,11 +54,13 @@ public class ProductService {
 	//
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
+		//chamando o OBJ REPOSITORY que é o OBJ da classe PRODUCTREPOSITORY
+		//e essa classe é a responsavel por ACESSO AO BANCO
+		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
+		//do tipo PRODUCT
 		Optional<Product> obj = repository.findById(id);
-		//OBS: Objeto OPTIONAL é uma tecnologia q serve para EVITAR
-		//trabalhar com VALORES NULO
 		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-
+		
 		return new ProductDTO(entity, entity.getCategories());
 	}
 	
@@ -76,25 +72,22 @@ public class ProductService {
 
 		copyDtoToEntity(dto, entity);
 		//para SALVAR no BANCO
-		//vamos chamar o REPOSITORY q é um OBJ do tipo PRODUCTREPOSITORY
-		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
-		//na nossa VAR ENTITY q é do tipo USER
 		entity = repository.save(entity);
 
 		return new ProductDTO(entity);
 	}
 
-	
-	//metodo do TIPO PRODUCTDTO de nome UPDATE para ATUALIZAR
-	//os valores de um PRODUCTDTO/product no BANCO
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
-		try {
-			copyDtoToEntity(dto, entity);
-			entity = repository.save(entity);
 
+		try {
+			Product entity = repository.getOne(id);
+			copyDtoToEntity(dto, entity);		
+			entity = repository.save(entity);
+	
 			return new ProductDTO(entity);
 		}
+
 		catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
@@ -114,6 +107,8 @@ public class ProductService {
 		}
 	}
 	
+	//
+	//
 	//criando um metodo AUXILIAR de nome COPYDTOTOENTITY para pegar 
 	//as INFORMACOES/ATRIBUTOS q estao no PRODUCTDTO e passar para o
 	//ENTITY que é uma VAR/OBJ do tipo PRODUCT
@@ -126,8 +121,9 @@ public class ProductService {
 		entity.setPrice(dto.getPrice());
 		
 		entity.getCategories().clear();
-
+	
 		for (CategoryDTO catDto : dto.getCategories()) {
+
 			Category category = categoryRepository.getOne(catDto.getId());
 
 			entity.getCategories().add(category);			

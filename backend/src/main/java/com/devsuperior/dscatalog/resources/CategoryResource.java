@@ -32,7 +32,7 @@ import com.devsuperior.dscatalog.services.CategoryService;
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
-
+	
 	@Autowired
 	private CategoryService service;
 	
@@ -41,15 +41,15 @@ public class CategoryResource {
 	// dados
 	@GetMapping
 	public ResponseEntity<Page<CategoryDTO>> findAll(
-			Pageable pageable) {
+			Pageable pageable) {		
 		Page<CategoryDTO> list = service.findAllPaged(pageable);
 
 		return ResponseEntity.ok().body(list);
 	}
-	
-	//
+
 	// criando um METODO/ENDPOINT para retornar uma CATEGORIA pelo o ID
 	// da CATEGORIA
+	//
 	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
@@ -61,6 +61,7 @@ public class CategoryResource {
 		
 		return ResponseEntity.ok().body(dto);
 	}
+	
 
 	// CADASTRANDO CATEGORY NO BANCO COM POST
 	//
@@ -68,17 +69,15 @@ public class CategoryResource {
 	// o RESPONSEENTITY e do tipo CATEGORYDTO, pois DPS de INSERIR
 	// nos vamos RETORNAR o nome da CATEGORY/categorydto q foi inserido
 	// o nome do metodo vai ser INSERT
-	//
 	@PostMapping
 	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
-		dto = service.insert(dto);		
+		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
-
+	
 		return ResponseEntity.created(uri).body(dto);
 	}
 	
-	//
 	// METODO/ENDPOINT para ATUALIZAR uma CATEGORIA
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
@@ -94,7 +93,7 @@ public class CategoryResource {
 
 	//Metodo restful para deletar
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();

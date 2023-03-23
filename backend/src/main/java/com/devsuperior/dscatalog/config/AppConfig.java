@@ -7,8 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-//Classe AppConfig e para guardar 
-//as configuracoes GERAIS da aplicacao/sistema
 
 @Configuration
 public class AppConfig {
@@ -21,17 +19,13 @@ public class AppConfig {
 		return new BCryptPasswordEncoder();
 	}
 	
-
-	//explicacao resumida: São OBJ q vao ser capaz de ACESSAR/LER/CRIAR 
-	//UM TOKEN JWT
-	//e eles serao INJETADOS na CLASSE AUTHORIZATIONSERVERCONFIG
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
 		tokenConverter.setSigningKey(jwtSecret);
 		return tokenConverter;
 	}
-	
+
 	@Bean
 	public JwtTokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());

@@ -21,12 +21,10 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 public class ResourceExceptionHandler {
 	
 	//criando um metodo q trate a EXCEPTION ResourceNotFoundException
-
+	
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request) {
-
 		HttpStatus status = HttpStatus.NOT_FOUND;
-
 		StandardError err = new StandardError();
 
 		err.setTimestamp(Instant.now());
@@ -39,7 +37,7 @@ public class ResourceExceptionHandler {
 	
 	
 	//criando um metodo para tratar a DATABASEEXCEPTION
-	
+
 	@ExceptionHandler(DatabaseException.class)
 	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
 
@@ -51,10 +49,8 @@ public class ResourceExceptionHandler {
 		err.setError("Database exception");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
-
 		return ResponseEntity.status(status).body(err);
 	}	
-
 	
 	//criando um metodo para tratar a METHODARGUMENTNOTVALIDEXCEPTION
 	//q é a EXCESSAO de quando nos CAD um PRODUTO com o NOME DE TAMANHO
@@ -62,7 +58,6 @@ public class ResourceExceptionHandler {
 	
 		@ExceptionHandler(MethodArgumentNotValidException.class)
 		public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
-
 			HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
 			ValidationError err = new ValidationError();
 
@@ -76,5 +71,5 @@ public class ResourceExceptionHandler {
 				err.addError(f.getField(), f.getDefaultMessage());
 			}
 			return ResponseEntity.status(status).body(err);
-		}
+		}	
 }

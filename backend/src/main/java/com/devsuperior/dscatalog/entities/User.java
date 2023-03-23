@@ -22,15 +22,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 //criando a CLASSE USER
- 
+//
 @Entity
 @Table(name = "tb_user")
-
 public class User implements UserDetails, Serializable{
 	private static final long serialVersionUID = 1L;
-	
-	//declarando os atributos/variaveis/caracteristicas do USER
-	//
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -42,14 +39,6 @@ public class User implements UserDetails, Serializable{
 	private String password;
 	
 	
-	
-	//para o USER estar associado com VARIAS ROLES
-	//vamos ter q declarar uma COLECAO de ROLES com
-	//o SET/CONJUNTO, pois o SET NAO aceita REPETICOES 
-	//(ao contrario da lista)
-	//
-	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
-	//no BANCO de MUITOS para MUITOS... 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_role",
 		joinColumns = @JoinColumn(name = "user_id"),
@@ -61,7 +50,6 @@ public class User implements UserDetails, Serializable{
 
 	public User() {
 	}
-		
 
 	public User(Long id, String firstName, String lastName, String email, String password) {
 		super();
@@ -73,7 +61,6 @@ public class User implements UserDetails, Serializable{
 	}
 	
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -122,6 +109,7 @@ public class User implements UserDetails, Serializable{
 		return roles;
 	}
 
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -148,19 +136,18 @@ public class User implements UserDetails, Serializable{
 	}
 	
 	
+	
 	//implementando tbm a INTERFACE USERDETAILS q serve para armazenar
 	//informacoes do USUARIO... tipo nome do USUARIO os 
 	//PERFIS/ROLE do usuario expiracao do TOKEN, etc...
 	@Override
+
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority()))
 				.collect(Collectors.toList());
 	}
-	
-	//metodos da interface
-	
-	//metodo para pegar o USERNAME q sera um EMAIL
+
 	@Override
 	public String getUsername() {
 		return email;
@@ -171,7 +158,7 @@ public class User implements UserDetails, Serializable{
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
+
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub

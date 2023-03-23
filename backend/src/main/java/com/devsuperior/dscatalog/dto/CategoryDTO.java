@@ -30,6 +30,8 @@ public class CategoryDTO implements Serializable {
 		this.name = entity.getName();
 	}
 
+	//criando os GET e SET para podermos VER e ALTERAR os valores das
+	//variaveis
 	public Long getId() {
 		return id;
 	}
