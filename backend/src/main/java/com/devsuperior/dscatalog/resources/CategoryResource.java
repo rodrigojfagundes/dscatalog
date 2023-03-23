@@ -19,13 +19,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.services.CategoryService;
 
+
 //classe para fazer chamada dos RECURSOS REST dos OBJETOS do tipo
 //CATEGORY... Ou seja quando o JAVASCRIPT q ta rodando no FRONT
 //requisitar as CATEGORIAS, ele o JS vai chamar os metodos dessa
 //classe aqui, a classe CATEGORYRESOURCE, e ESSA CLASSE chama
 //a classe CATEGORYSERVICE, q roda os METODOS solicitados
-
-
+//
 //para dizer q essa classe é um CONTROLADOR REST, vamos por o
 //@RESTCONTROLLER... e o @RequestMapping e para dizer qual a ROTA
 //do recurso... ou seja (localhost:8080/categories)
@@ -37,16 +37,16 @@ public class CategoryResource {
 	private CategoryService service;
 	@GetMapping
 	public ResponseEntity<Page<CategoryDTO>> findAll(
-			Pageable pageable
-			) {
+			Pageable pageable) {
 		Page<CategoryDTO> list = service.findAllPaged(pageable);
 
 		return ResponseEntity.ok().body(list);
 	}
-
-
+	
+	//
 	// criando um METODO/ENDPOINT para retornar uma CATEGORIA pelo o ID
 	// da CATEGORIA
+	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -54,26 +54,34 @@ public class CategoryResource {
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
 		CategoryDTO dto = service.findById(id);
-
 		return ResponseEntity.ok().body(dto);
 	}
-
-
+	
 	// CADASTRANDO CATEGORY NO BANCO COM POST
 	//
+	//
+	// METODO POST RESTFUL para inserir no BANCO uma nova categoria
+	// o RESPONSEENTITY e do tipo CATEGORYDTO, pois DPS de INSERIR
+	// nos vamos RETORNAR o nome da CATEGORY/categorydto q foi inserido
+	// o nome do metodo vai ser INSERT
+	// esse metodo, vai receber os DADOS em forma de OBJ q pode ter
+	// varios parametros...
 	@PostMapping
 	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
 		dto = service.insert(dto);
-		
+
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(dto);
 	}
-
+	
 	//
 	// METODO/ENDPOINT para ATUALIZAR uma CATEGORIA
 	//
+	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
+	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
+	// da CATEGORY q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto) {
 		dto = service.update(id, dto);
@@ -81,14 +89,10 @@ public class CategoryResource {
 		return ResponseEntity.ok().body(dto);
 	}
 
-	//
-	// METODO/ENDPOINT para DELETAR uma CATEGORIA
-	//
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-	service.delete(id);
+	public ResponseEntity<Void> delete(@PathVariable Long id) { 
+		service.delete(id);
 
 		return ResponseEntity.noContent().build();
 	}
-
-}
+} 

@@ -2,21 +2,27 @@ package com.devsuperior.dscatalog.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+
+//classe category q esta no PACOTE ENTITY
  
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,9 +30,21 @@ public class Category implements Serializable {
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant createdAt;
-
+	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-	private Instant updateAt;
+	private Instant updatedAt;
+	
+	//fazendo o mapeamento em que uma CATEGORY tem um PRODUCT 
+	//declarando um PRODUCT do tipo SET/CONJUNTO q ira receber os
+	//PRODUCT q faz parte dessa CATEGORY
+	//
+	//ANNOTATION @MANYTOMANY (muitos para muitos)
+	//e no MAPPEDBY nos estamos dizendo q e para fazer a ASSOCIACAO
+	//entre as o PRODUCT(q e essa classe) e o CATEGORY, no caso
+	//no passamos o nome CATEGORIES pois esse é o nome do SET do
+	//tipo CATEGORY q esta declarado dentro de PRODUCT
+	@ManyToMany(mappedBy = "categories")
+	private Set<Product> products = new HashSet<>();
 	
 	public Category() {
 	}
@@ -35,7 +53,7 @@ public class Category implements Serializable {
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -55,21 +73,25 @@ public class Category implements Serializable {
 	public Instant getCreatedAt() {
 		return createdAt;
 	}
-	
-	public Instant getUpdateAt() {
-		return updateAt;
+
+	public Instant getUpdatedAt() {
+		return updatedAt;
 	}
 
 	@PrePersist
-	public void prePersis() {
+	public void prePersist() {
 		createdAt = Instant.now();
 	}
-
+	
 	@PreUpdate
 	public void preUpdate() {
-		updateAt = Instant.now();
+		updatedAt = Instant.now();
 	}
 	
+	public Set<Product> getProducts() {
+		return products;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,5 +115,5 @@ public class Category implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
 }

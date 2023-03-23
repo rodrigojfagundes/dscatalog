@@ -17,13 +17,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_product")
-public class Product implements Serializable{
-	private static final long serialVersionUID = 1L;
 
+public class Product implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	
 	@Column(columnDefinition = "TEXT")
 	private String description;
 	private Double price;
@@ -38,17 +40,22 @@ public class Product implements Serializable{
 	//(ao contrario da lista)
 	//
 	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
-	//no BANCO de MUITOS para MUITOS...	
+	//no BANCO de MUITOS para MUITOS... 
+	//e o ANNOTATION @JOINTABLE, e para criar uma TABELA q faz
+	//uma ASSOCIACAO entre as DUAS ENTIDADES (Categories e Products)
+	//primeiro argumento(name) o NOME da TABELA...
+	//JoinColumns e para dizer qual vai ser a chave ESTRANGEIRA de PRODUCT
+	//e o INVERSEJOINCOLUMN e para dizer qual a chave ESTRANGEIRA de CATEGORY
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
-	joinColumns = @JoinColumn(name = "product_id"),
-	inverseJoinColumns = @JoinColumn(name = "category_id")
-			)
+		joinColumns = @JoinColumn(name = "product_id"),
+		inverseJoinColumns = @JoinColumn(name = "category_id"))	
+
 	Set<Category> categories = new HashSet<>();
-	
+
 	public Product() {
 	}
-	
+
 	public Product(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
 		this.name = name;
@@ -63,80 +70,54 @@ public class Product implements Serializable{
 		return id;
 	}
 
-
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 
 	public String getName() {
 		return name;
 	}
 
-
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 
 	public String getDescription() {
 		return description;
 	}
 
-
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
 
 	public Double getPrice() {
 		return price;
 	}
 
-
-
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-
-
 
 	public String getImgUrl() {
 		return imgUrl;
 	}
 
-
-
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-
-
 
 	public Instant getDate() {
 		return date;
 	}
 
-
-
 	public void setDate(Instant date) {
 		this.date = date;
 	}
 
-
-
 	public Set<Category> getCategories() {
 		return categories;
 	}
-	
-	
-	//instanciando o HASHCODE EQUALS para fazer comparacoes
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -144,8 +125,6 @@ public class Product implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
