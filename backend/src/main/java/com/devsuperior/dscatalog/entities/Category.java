@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
 
 @Table(name = "tb_category")
@@ -29,6 +28,7 @@ public class Category implements Serializable {
 	}
 	
 	
+	//criando os GET e SET
 	public Long getId() {
 		return id;
 	}
