@@ -13,10 +13,10 @@ import com.devsuperior.dscatalog.entities.Category;
 
 public class CategoryDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String name;
-	
+
 	public CategoryDTO() {
 	}
 	
@@ -24,15 +24,11 @@ public class CategoryDTO implements Serializable {
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public CategoryDTO(Category entity) {
-		//os valores dos ATRIBUTOS do nosso CATEGORYDTO vao ser
-		//preenchidos pelos os VALORES q estiverem nos ATRIBUTOS
-		//do nosso OBJ/variavel ENTITY que é do tipo da classe CATEGORY
 		this.id = entity.getId();
 		this.name = entity.getName();
 	}
-	
 	
 	public Long getId() {
 		return id;

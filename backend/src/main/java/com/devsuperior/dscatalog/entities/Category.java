@@ -9,24 +9,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	
+	//criando o contrutor vazio
 	public Category() {
 	}
-
+	
+	//construtor com argumentos
 	public Category(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 	
+	
+	//criando os GET e SET
 	public Long getId() {
 		return id;
 	}
