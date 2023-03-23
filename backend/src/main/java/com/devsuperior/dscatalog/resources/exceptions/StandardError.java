@@ -3,6 +3,8 @@ package com.devsuperior.dscatalog.resources.exceptions;
 import java.io.Serializable;
 import java.time.Instant;
 
+//classe STANDARDERROR, ou seja erro padrao...
+//uma estrutura PADRAO para erros
 public class StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -15,7 +17,7 @@ public class StandardError implements Serializable {
 	public StandardError() {
 	}
 	
-	
+
 	public Instant getTimestamp() {
 		return timestamp;
 	}

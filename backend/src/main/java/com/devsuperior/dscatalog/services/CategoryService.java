@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,32 +29,26 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository repository;
 	
-	//criando um METODO do tipo PAGE de CATEGORYDTO
-	//q vamos chamar de FINDALLPAGED q recebe um PAGEREQUEST
 	@Transactional(readOnly = true)
-	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
+	public Page<CategoryDTO> findAllPaged(Pageable pageable){
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
 		//CATEGORYREPOSITORY e como ele o CATEGORYREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
-		//FINDALL... E passamos o valor do PAGEREQUEST
+		//FINDALL...
 		//
-		Page<Category> list = repository.findAll(pageRequest);
+		Page<Category> list = repository.findAll(pageable);
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
 	
-	//
-	//
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
 	//
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
-		//chamando o OBJ REPOSITORY que é o OBJ da classe CATEGORYREPOSITORY
-		//e essa classe é a responsavel por ACESSO AO BANCO
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-
+		
 		return new CategoryDTO(entity);
 	}
 	
@@ -62,12 +56,15 @@ public class CategoryService {
 	//no BANCO
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
-		//pegando o DTO do tipo CATEGORYDTO e converter para uma
-		//ENTIDADE, Um ENTITY do tipo CATEGORY
 		Category entity = new Category();
+		//agora vamos pegar os valores q ESTAO na VAR/OBJ DTO q foi
+		//passado como argumento no METO INSERT
+		//e vamos ATRIBUIR a nossa VAR ENTITY q é uma VAR do tipo
+		//CATEGORY...
 		entity.setName(dto.getName());
-		//Salvando a var ENTITY do tipo CATEGORY no banco
+		//para SALVAR no BANCO
 		entity = repository.save(entity);
+		
 		return new CategoryDTO(entity);
 	}
 	
@@ -76,15 +73,12 @@ public class CategoryService {
 	//os valores de uma CATEGORYDTO/category no BANCO
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
+	
 		try {
-		//instanciando uma ENTIDADE/OBJETO do tipo CATEGORY de nome ENTITY
-		//E a ENTITY vai receber o RETORNO do METODO GETONE do REPOSITORY
-		//metodo GETONE q recebe o ID da CATEGORY q queremos q SEJA ATUALIZADA
 		Category entity = repository.getOne(id);
-		//vamos atualizar os DADOS, ou seja vamos PEGAR o o DTO
-		//e passar o valor q ta em NAME do DTO para o nosso ENTITY
 		entity.setName(dto.getName());
 		entity = repository.save(entity);
+		
 		return new CategoryDTO(entity);
 		}
 		catch(EntityNotFoundException e) {
@@ -95,7 +89,6 @@ public class CategoryService {
 	
 	//criando um METODO para DELETAR uma CATEGORY
 	public void delete(Long id) {
-
 		try {
 		repository.deleteById(id);
 		}
@@ -105,5 +98,5 @@ public class CategoryService {
 		catch(DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
-	}
+	}	
 }

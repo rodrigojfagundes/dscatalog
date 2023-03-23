@@ -4,8 +4,7 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,76 +32,52 @@ import com.devsuperior.dscatalog.services.ProductService;
 @RequestMapping(value = "/products")
 public class ProductResource {
 
-
 	@Autowired
 	private ProductService service;
 
 	@GetMapping
 	// criando o primeiro METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
-	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
-	// encapsula uma RESPOSTA/retorno no formato HTTP... E
-	// entre <<>> nos vamos colocar o tipo de dado q estara presente
-	// dentro do RESPONSEENTITY no caso é um PAGE/pagina de PRODUCTDTO
-	//e dentro do FINDALL vamos passar alguns parametro de BUSCA
 	public ResponseEntity<Page<ProductDTO>> findAll(
-
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
-
-			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
-
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-
-			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy
+			Pageable pageable
 			) {
-		
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, 
-				Direction.valueOf(direction), orderBy);
-
-		Page<ProductDTO> list = service.findAllPaged(pageRequest);
+		Page<ProductDTO> list = service.findAllPaged(pageable);
 
 		return ResponseEntity.ok().body(list);
 	}
 
+
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
-	//
-	// o @GETMAPPING e para dizer q o metodo FINDBYID vai ser um METODO
-	// q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
-	// dados e o VALUE ali nos vamos passar {ID} pois quando nos buscar
-	// um PRODUCT especifico nos vamos passar assim
-	// localhost:8080/product/ID (valor do id)
 	@GetMapping(value = "/{id}")
+	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
+	// responder a uma SOLICITAÇÂO feita atraves do navegador
+	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
+	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-		// criando uma VARIAVEL do tipo PRODUCTDTO q irá se chamar de DTO
-		// e essa VAR, vai receber o RETORNO do metodo FINDBYID (com o ID)
 		ProductDTO dto = service.findById(id);
-
 		return ResponseEntity.ok().body(dto);
 	}
-
-	//
+	
+	
 	// CADASTRANDO PRODUCT NO BANCO COM POST
+	//
 	// METODO POST RESTFUL para inserir no BANCO um novo produto
 	// o RESPONSEENTITY e do tipo PRODUCTDTO, pois DPS de INSERIR
 	// nos vamos RETORNAR o nome da PRODUCT/productdto q foi inserido
 	// o nome do metodo vai ser INSERT
-	//
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
 		dto = service.insert(dto);
+
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
-
+				
 		return ResponseEntity.created(uri).body(dto);
 	}
 
 	//
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
-	//
-	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
-	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
-	// da PRODUCT q queremos ATUALIZAR
 	//
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
@@ -111,14 +85,11 @@ public class ProductResource {
 		return ResponseEntity.ok().body(dto);
 	}
 
+
 	// METODO/ENDPOINT para DELETAR um PRODUCT
 	//
-	//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
-	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
-	//do PRODUCT q queremos DELETAR
-	//
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 	service.delete(id);
 
 		return ResponseEntity.noContent().build();
