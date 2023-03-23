@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 //criando a CLASSE USER
-//
+ 
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable{
@@ -44,7 +44,6 @@ public class User implements Serializable{
 	@JoinTable(name = "tb_user_role",
 		joinColumns = @JoinColumn(name = "user_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id"))	
-	//fazendo o mapeamento em q um PRODUCT tem varias CATEGORIES
 	
 	//fazendo o mapeamento em q um USER tem varias ROLES
 	private Set<Role> roles = new HashSet<>();
@@ -53,7 +52,6 @@ public class User implements Serializable{
 	public User() {
 	}
 		
-
 	public User(Long id, String firstName, String lastName, String email, String password) {
 		super();
 		this.id = id;
@@ -62,8 +60,6 @@ public class User implements Serializable{
 		this.email = email;
 		this.password = password;
 	}
-	
-
 	
 	public Long getId() {
 		return id;

@@ -35,7 +35,7 @@ import com.devsuperior.dscatalog.services.UserService;
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
-	
+
 	@Autowired
 	private UserService service;
 	
@@ -50,8 +50,10 @@ public class UserResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	//
 	// criando um METODO/ENDPOINT para retornar um USUARIO pelo o ID
 	// da USUARIO
+	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -66,6 +68,7 @@ public class UserResource {
 
 	// CADASTRANDO USER NO BANCO COM POST
 	//
+	//
 	// METODO POST RESTFUL para inserir no BANCO um novo usuario
 	// o RESPONSEENTITY e do tipo USERINSERTDTO, pois DPS de INSERIR
 	// nos vamos RETORNAR o nome do USER/userdto q foi inserido
@@ -73,19 +76,18 @@ public class UserResource {
 	@PostMapping
 	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
 		UserDTO newDto = service.insert(dto);
-
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newDto.getId()).toUri();
 		
 		return ResponseEntity.created(uri).body(newDto);
 	}
 	
-	
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
 	// do USER q queremos ATUALIZAR
+	//
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
 		dto = service.update(id, dto);

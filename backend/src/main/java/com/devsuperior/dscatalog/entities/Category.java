@@ -16,19 +16,18 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 
-//classe category q esta no PACOTE ENTITY
-
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	
+
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+
 	private Instant createdAt;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
@@ -40,10 +39,12 @@ public class Category implements Serializable {
 	//
 	//ANNOTATION @MANYTOMANY (muitos para muitos)
 	//e no MAPPEDBY nos estamos dizendo q e para fazer a ASSOCIACAO
-	//entre as o PRODUCT(q e essa classe) e o CATEGORY
+	//entre as o PRODUCT(q e essa classe) e o CATEGORY, no caso
+	//no passamos o nome CATEGORIES pois esse é o nome do SET do
+	//tipo CATEGORY q esta declarado dentro de PRODUCT
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
-	
+
 	public Category() {
 	}
 

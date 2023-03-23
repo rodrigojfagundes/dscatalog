@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 //Classe AppConfig e para guardar 
 //as configuracoes GERAIS da aplicacao/sistema
-//
+
 @Configuration
 public class AppConfig {
 

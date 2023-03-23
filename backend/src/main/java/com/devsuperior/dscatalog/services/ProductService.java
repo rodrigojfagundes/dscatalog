@@ -26,17 +26,15 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE PRODUCTREPOSITORY (repository)
-//
 @Service
 public class ProductService {
 
 	@Autowired
 	private ProductRepository repository;
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
-	
+		
 	//criando um METODO do tipo PAGE de PRODUCTDTO
 	//q vamos chamar de FINDALLPAGED q recebe um PEGEABLE
 	@Transactional(readOnly = true)
@@ -45,7 +43,6 @@ public class ProductService {
 		//PRODUCTREPOSITORY e como ele o PRODUCTREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
-		//
 		Page<Product> list = repository.findAll(pageable);
 
 		return list.map(x -> new ProductDTO(x));
@@ -53,13 +50,19 @@ public class ProductService {
 	}
 	
 	//
+	//
 	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
 	//
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
+		//chamando o OBJ REPOSITORY que é o OBJ da classe PRODUCTREPOSITORY
+		//e essa classe é a responsavel por ACESSO AO BANCO
+		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
+		//do tipo PRODUCT
 		Optional<Product> obj = repository.findById(id);
 		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+
 		return new ProductDTO(entity, entity.getCategories());
 	}
 	
@@ -71,7 +74,7 @@ public class ProductService {
 		copyDtoToEntity(dto, entity);
 		//para SALVAR no BANCO
 		entity = repository.save(entity);
-		
+
 		return new ProductDTO(entity);
 	}
 
@@ -80,15 +83,15 @@ public class ProductService {
 	//os valores de um PRODUCTDTO/product no BANCO
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
-
 		try {
 			Product entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);
+			copyDtoToEntity(dto, entity);		
 			entity = repository.save(entity);
-
+	
 			return new ProductDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
+
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
 	}
@@ -106,8 +109,8 @@ public class ProductService {
 		}
 	}
 	
-	
-	//converter de PRODUCTDTO para PRODUCT
+	//
+	//Metodo para converter de PRODUCTDTO para PRODUCT
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
 
 		entity.setName(dto.getName());
@@ -115,12 +118,11 @@ public class ProductService {
 		entity.setDate(dto.getDate());
 		entity.setImgUrl(dto.getImgUrl());
 		entity.setPrice(dto.getPrice());
-		
-		
 		entity.getCategories().clear();
+
 		for (CategoryDTO catDto : dto.getCategories()) {
 			Category category = categoryRepository.getOne(catDto.getId());
-	
+
 			entity.getCategories().add(category);			
 		}
 	}	

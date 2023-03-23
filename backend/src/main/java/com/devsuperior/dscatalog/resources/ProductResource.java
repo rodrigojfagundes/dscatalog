@@ -49,9 +49,9 @@ public class ProductResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	//
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
-	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -63,6 +63,7 @@ public class ProductResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
+
 	// CADASTRANDO PRODUCT NO BANCO COM POST
 	//
 	// METODO POST RESTFUL para inserir no BANCO um novo produto
@@ -86,15 +87,18 @@ public class ProductResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
-		
+
 		return ResponseEntity.ok().body(dto);
 	}
 
 
 	// METODO/ENDPOINT para DELETAR um PRODUCT
 	//
+	//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
+	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
+	//do PRODUCT q queremos DELETAR
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) { 
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();

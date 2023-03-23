@@ -53,13 +53,14 @@ public class ProductServiceIT {
 	
 	
 	//testando o FINDALLPAGED
-	//passando uma PAGINA basica
 	@Test
 	public void findAllPagedShouldReturnPageWhenPage0Size10() {
 		
 		PageRequest pageRequest = PageRequest.of(0, 10);
+		
 		Page<ProductDTO> result = service.findAllPaged(pageRequest);
 		
+		//fazendo as ASSERTIONS para verificar se
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(0, result.getNumber());
 		Assertions.assertEquals(10, result.getSize());
@@ -71,7 +72,9 @@ public class ProductServiceIT {
 	public void findAllPagedShouldReturnEmptyPageWhenPageDoesNotExist() {
 		
 		PageRequest pageRequest = PageRequest.of(50, 10);
+		
 		Page<ProductDTO> result = service.findAllPaged(pageRequest);
+		
 		Assertions.assertTrue(result.isEmpty());
 	}
 	
@@ -84,7 +87,9 @@ public class ProductServiceIT {
 		PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("name"));
 		
 		Page<ProductDTO> result = service.findAllPaged(pageRequest);
-
+		
+		//e testando SE o primeiro e MACBOOK e o SEGUNDO e PC GAMER...
+		//etc...
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals("Macbook Pro", result.getContent().get(0).getName());
 		Assertions.assertEquals("PC Gamer", result.getContent().get(1).getName());

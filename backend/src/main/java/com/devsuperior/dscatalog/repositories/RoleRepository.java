@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.devsuperior.dscatalog.entities.Role;
 
+	//e essa interface HERDA de JPAREPOSITORY para se conectar
+	//ao BANCO, o JPAREPOSITORY recebe um TIPO da ENTIDADE
+	//no caso USER, e um ID, q vai ser no formato LONG
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 

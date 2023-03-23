@@ -20,15 +20,16 @@ public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+
 	@NotBlank(message = "Campo obrigatorio")
 	private String firstName;
 	private String lastName;
-	
+
 	@Email(message = "Favor entrar um email valido")
 	private String email;
-		
+	
 	Set<RoleDTO> roles = new HashSet<>();
-
+	
 	public UserDTO() {
 	}
 	
@@ -40,6 +41,10 @@ public class UserDTO implements Serializable {
 	}
 	
 	
+	
+	//criando um construtor com a ENTIDADE/CLASSE USER
+	//pois assim sera mais facil para converter de
+	//USER para USERDTO :)
 	public UserDTO(User entity) {
 		this.id = entity.getId();
 		this.firstName = entity.getFirstName();
@@ -50,7 +55,7 @@ public class UserDTO implements Serializable {
 		
 	}
 	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -94,5 +99,4 @@ public class UserDTO implements Serializable {
 	public Set<RoleDTO> getRoles() {
 		return roles;
 	}
-
 }

@@ -44,12 +44,10 @@ public class ProductResourceIT {
 		nonExistingId = 1000L;
 		countTotalProducts = 25L;
 	}
-	
-	//testando se o o metodo FINDALL ta vindo ordenado por nome
-	//quando e pedido
+
 	@Test
 	public void findAllShouldReturnSortedPageWhenSortByName() throws Exception {
-
+		
 		ResultActions result = 
 				mockMvc.perform(get("/products?page=0&size=12&sort=name,asc")
 					.accept(MediaType.APPLICATION_JSON));

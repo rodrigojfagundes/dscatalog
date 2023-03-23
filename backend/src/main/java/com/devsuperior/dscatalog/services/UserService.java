@@ -36,6 +36,7 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+
 	@Autowired
 	private UserRepository repository;
 
@@ -53,15 +54,15 @@ public class UserService {
 		//FINDALL...
 		//
 		Page<User> list = repository.findAll(pageable);
-
 		return list.map(x -> new UserDTO(x));
 		//return listDto;
 	}
 	
 	//
 	//
-	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
+	//metodo FINDBYID q busca uma determinado USER conforme o ID
 	//informado
+	//
 	//
 	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
@@ -71,7 +72,7 @@ public class UserService {
 		//do tipo USER
 		Optional<User> obj = repository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		
+
 		return new UserDTO(entity);
 	}
 	
@@ -81,10 +82,11 @@ public class UserService {
 	public UserDTO insert(UserInsertDTO dto) {
 		User entity = new User();
 		copyDtoToEntity(dto, entity);
-		entity.setPassword(passwordEncoder.encode(dto.getPassword()));		
+		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+		
 		//para SALVAR no BANCO
 		entity = repository.save(entity);
-
+	
 		return new UserDTO(entity);
 	}
 	
@@ -94,9 +96,9 @@ public class UserService {
 	public UserDTO update(Long id, UserDTO dto) {
 		try {
 			User entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);		
+			copyDtoToEntity(dto, entity);			
 			entity = repository.save(entity);
-	
+
 			return new UserDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
@@ -117,16 +119,15 @@ public class UserService {
 		}
 	}
 	
-		
-		//Converter de USERDTO para USER
+	//Metodo para converter de USERDTO para USER
 	private void copyDtoToEntity(UserDTO dto, User entity) {
 
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
 		
-	
 		entity.getRoles().clear();
+
 		for (RoleDTO roleDto : dto.getRoles()) {
 			Role role = roleRepository.getOne(roleDto.getId());
 
