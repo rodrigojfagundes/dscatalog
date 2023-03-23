@@ -12,19 +12,20 @@ public class RoleDTO implements Serializable {
 	
 	public RoleDTO() {
 	}
-		
+
 	public RoleDTO(Long id, String authority) {
 		super();
 		this.id = id;
 		this.authority = authority;
 	}
 	
+	
 	public RoleDTO(Role role) {
 		id = role.getId();
 		authority = role.getAuthority();
 	}
 	
-
+	
 	public Long getId() {
 		return id;
 	}

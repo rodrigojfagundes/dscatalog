@@ -2,6 +2,8 @@ package com.devsuperior.dscatalog.resources;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,7 @@ import com.devsuperior.dscatalog.services.ProductService;
 @RestController
 @RequestMapping(value = "/products")
 public class ProductResource {
+	
 	@Autowired
 	private ProductService service;
 	
@@ -46,9 +49,10 @@ public class ProductResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
-	//
+	
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -59,27 +63,19 @@ public class ProductResource {
 
 		return ResponseEntity.ok().body(dto);
 	}
-	
 
 	// CADASTRANDO PRODUCT NO BANCO COM POST
 	//
-	//
-
-	// METODO POST RESTFUL para inserir no BANCO um novo produto
-	// o RESPONSEENTITY e do tipo PRODUCTDTO, pois DPS de INSERIR
-	// nos vamos RETORNAR o nome da PRODUCT/productdto q foi inserido
-	// o nome do metodo vai ser INSERT
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
+	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
 		dto = service.insert(dto);
-		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(dto);
 	}
 	
-	//
+	
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
@@ -87,21 +83,15 @@ public class ProductResource {
 	// da PRODUCT q queremos ATUALIZAR
 	//
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(dto);
 	}
-	
+
 
 	// METODO/ENDPOINT para DELETAR um PRODUCT
 	//
-	//
-	//
-	//
-	//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
-	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
-	//do PRODUCT q queremos DELETAR
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);

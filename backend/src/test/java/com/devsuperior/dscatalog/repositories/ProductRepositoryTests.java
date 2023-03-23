@@ -24,11 +24,12 @@ public class ProductRepositoryTests {
 	
 	private long existingId;
 	private long nonExistingId;
+
 	private long countTotalProducts;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-
+		
 		existingId = 1L;
 
 		nonExistingId = 1000L;
@@ -40,7 +41,7 @@ public class ProductRepositoryTests {
 	//esta funcionando
 	@Test
 	public void saveShouldPersistWithAutoincrementWhenIdIsNull() {
-
+	
 		Product product = Factory.createProduct();
 		product.setId(null);
 		
@@ -58,9 +59,9 @@ public class ProductRepositoryTests {
 	//se ta funcionando
 	@Test
 	public void deleteShouldDeleteObjectWhenIdExists() {
-		repository.deleteById(existingId);
+		repository.deleteById(existingId); 
 		Optional<Product> result = repository.findById(existingId);
-	
+
 		Assertions.assertFalse(result.isPresent());
 	}
 	

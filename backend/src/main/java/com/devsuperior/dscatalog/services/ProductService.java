@@ -36,22 +36,20 @@ public class ProductService {
 	private CategoryRepository categoryRepository;
 	
 	
-		//criando um METODO do tipo PAGE de PRODUCTDTO
-		//q vamos chamar de FINDALLPAGED q recebe um PEGEABLE
-		
+	//criando um METODO do tipo PAGE de PRODUCTDTO
+	//q vamos chamar de FINDALLPAGED q recebe um PEGEABLE
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
 		//PRODUCTREPOSITORY e como ele o PRODUCTREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
-		//
 		Page<Product> list = repository.findAll(pageable);
-	
 		return list.map(x -> new ProductDTO(x));
 		//return listDto;
-	}	
-
+	}
+	
+	//
 	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
 	//
@@ -63,7 +61,7 @@ public class ProductService {
 		//do tipo PRODUCT
 		Optional<Product> obj = repository.findById(id);
 		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-
+	
 		return new ProductDTO(entity, entity.getCategories());
 	}
 	
@@ -71,9 +69,9 @@ public class ProductService {
 	//no BANCO
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
-
 		Product entity = new Product();
 		copyDtoToEntity(dto, entity);
+		//para SALVAR no BANCO
 		entity = repository.save(entity);
 
 		return new ProductDTO(entity);
@@ -84,12 +82,11 @@ public class ProductService {
 	//os valores de um PRODUCTDTO/product no BANCO
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
-	
 		try {
 			Product entity = repository.getOne(id);
-			copyDtoToEntity(dto, entity);		
+			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
-	
+
 			return new ProductDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
@@ -110,11 +107,8 @@ public class ProductService {
 		}
 	}
 	
-
-	//criando um metodo AUXILIAR de nome COPYDTOTOENTITY para pegar 
-	//as INFORMACOES/ATRIBUTOS q estao no PRODUCTDTO e passar para o
-	//ENTITY que é uma VAR/OBJ do tipo PRODUCT
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
+
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setDate(dto.getDate());
@@ -122,7 +116,7 @@ public class ProductService {
 		entity.setPrice(dto.getPrice());
 		
 		entity.getCategories().clear();
-	
+
 		for (CategoryDTO catDto : dto.getCategories()) {
 			Category category = categoryRepository.getOne(catDto.getId());
 

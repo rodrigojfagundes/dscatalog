@@ -2,6 +2,8 @@ package com.devsuperior.dscatalog.resources;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +35,7 @@ import com.devsuperior.dscatalog.services.UserService;
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
-	
+
 	@Autowired
 	private UserService service;
 	
@@ -41,11 +43,10 @@ public class UserResource {
 	//q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
 	//dados
 	@GetMapping
-	
 	public ResponseEntity<Page<UserDTO>> findAll(
 			Pageable pageable) {
 		Page<UserDTO> list = service.findAllPaged(pageable);	
-	
+
 		return ResponseEntity.ok().body(list);
 	}
 	
@@ -60,47 +61,40 @@ public class UserResource {
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		UserDTO dto = service.findById(id);
-
+		
 		return ResponseEntity.ok().body(dto);
 	}
 	
 
 	// CADASTRANDO USER NO BANCO COM POST
 	//
-	@PostMapping
-	public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto) {
-		UserDTO newDto = service.insert(dto);
+	// METODO POST RESTFUL para inserir no BANCO um novo usuario
+	// o RESPONSEENTITY e do tipo USERINSERTDTO, pois DPS de INSERIR
+	// nos vamos RETORNAR o nome do USER/userdto q foi inserido
+	// o nome do metodo vai ser INSERT
 
+	@PostMapping
+	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
+		UserDTO newDto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newDto.getId()).toUri();
-
+		
 		return ResponseEntity.created(uri).body(newDto);
 	}
 	
-	//
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
-	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
-	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
-	// do USER q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO dto) {
+	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
 		dto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(dto);
 	}
-
-
-	// METODO/ENDPOINT para DELETAR um USER
-	//
-	//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
-	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
-	//do USER q queremos DELETAR
-	//
+	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();
 	}
-}
+} 

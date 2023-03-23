@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 //criando a CLASSE USER
- 
+// 
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable{
@@ -53,6 +53,7 @@ public class User implements Serializable{
 		joinColumns = @JoinColumn(name = "user_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id"))	
 
+
 	private Set<Role> roles = new HashSet<>();
 	
 
@@ -69,8 +70,7 @@ public class User implements Serializable{
 	}
 	
 
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -119,7 +119,6 @@ public class User implements Serializable{
 		return roles;
 	}
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -18,8 +18,8 @@ public class ResourceExceptionHandler {
 	
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request) {
-
 		HttpStatus status = HttpStatus.NOT_FOUND;
+
 		StandardError err = new StandardError();
 
 		err.setTimestamp(Instant.now());
@@ -30,9 +30,6 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(status).body(err);
 	}	
 	
-	
-	//criando um metodo para tratar a DATABASEEXCEPTION
-
 	@ExceptionHandler(DatabaseException.class)
 	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
 
