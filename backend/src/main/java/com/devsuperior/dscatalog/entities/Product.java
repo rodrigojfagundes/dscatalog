@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name = "tb_product")
 public class Product implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -38,7 +38,7 @@ public class Product implements Serializable{
 	//(ao contrario da lista)
 	//
 	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
-	//no BANCO de MUITOS para MUITOS... 
+	//no BANCO de MUITOS para MUITOS...	
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
 	joinColumns = @JoinColumn(name = "product_id"),

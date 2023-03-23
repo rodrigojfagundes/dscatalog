@@ -24,27 +24,29 @@ import com.devsuperior.dscatalog.services.CategoryService;
 //requisitar as CATEGORIAS, ele o JS vai chamar os metodos dessa
 //classe aqui, a classe CATEGORYRESOURCE, e ESSA CLASSE chama
 //a classe CATEGORYSERVICE, q roda os METODOS solicitados
-//
+
+
 //para dizer q essa classe é um CONTROLADOR REST, vamos por o
 //@RESTCONTROLLER... e o @RequestMapping e para dizer qual a ROTA
 //do recurso... ou seja (localhost:8080/categories)
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
+
 	@Autowired
 	private CategoryService service;
 	@GetMapping
 	public ResponseEntity<Page<CategoryDTO>> findAll(
 			Pageable pageable
 			) {
-
 		Page<CategoryDTO> list = service.findAllPaged(pageable);
+
 		return ResponseEntity.ok().body(list);
 	}
 
+
 	// criando um METODO/ENDPOINT para retornar uma CATEGORIA pelo o ID
 	// da CATEGORIA
-	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -59,11 +61,10 @@ public class CategoryResource {
 
 	// CADASTRANDO CATEGORY NO BANCO COM POST
 	//
-	//
 	@PostMapping
 	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
 		dto = service.insert(dto);
-
+		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
 
@@ -86,7 +87,7 @@ public class CategoryResource {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 	service.delete(id);
-	
+
 		return ResponseEntity.noContent().build();
 	}
 

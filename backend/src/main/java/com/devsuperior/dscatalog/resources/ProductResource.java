@@ -24,6 +24,7 @@ import com.devsuperior.dscatalog.services.ProductService;
 //requisitar os PRODUTOS, ele o JS vai chamar os metodos dessa
 //classe aqui, a classe PRODUCTRESOURCE, e ESSA CLASSE chama
 //a classe PRODUCTSERVICE, q roda os METODOS solicitados
+
 //
 //para dizer q essa classe é um CONTROLADOR REST, vamos por o
 //@RESTCONTROLLER... e o @RequestMapping e para dizer qual a ROTA
@@ -39,13 +40,11 @@ public class ProductResource {
 	public ResponseEntity<Page<ProductDTO>> findAll(
 			Pageable pageable
 			) {
-
 		Page<ProductDTO> list = service.findAllPaged(pageable);
-
 		return ResponseEntity.ok().body(list);
 	}
 
-
+	//
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
 	//
@@ -69,12 +68,13 @@ public class ProductResource {
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
-
+				
 		return ResponseEntity.created(uri).body(dto);
 	}
 
-	//
+	
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
+	//
 	//
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
@@ -82,9 +82,9 @@ public class ProductResource {
 
 		return ResponseEntity.ok().body(dto);
 	}
-
-	// METODO/ENDPOINT para DELETAR um PRODUCT
 	//
+	//
+	// METODO/ENDPOINT para DELETAR um PRODUCT
 	//
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
