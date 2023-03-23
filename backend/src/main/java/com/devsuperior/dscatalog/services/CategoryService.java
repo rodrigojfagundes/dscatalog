@@ -11,20 +11,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.repositories.CategoryRepository;
 import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
+
 //classe CATEGORYSERVICE, ela recebe a SOLICITAÇÂO da classe
 //CATEGORYRESOURCE, e ela CATEGORYSERVICE executa os metodos
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE CATEGORYREPOSITORY (repository)
+//
 @Service
 public class CategoryService {
-	
+
 	@Autowired
 	private CategoryRepository repository;
 	
@@ -38,15 +41,14 @@ public class CategoryService {
 		//FINDALL...
 		//
 		Page<Category> list = repository.findAll(pageable);
+
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
 	
 	//
-	//
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
-	//
 	//
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
@@ -56,7 +58,7 @@ public class CategoryService {
 		//do tipo CATEGORY
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-	
+		
 		return new CategoryDTO(entity);
 	}
 	
@@ -65,18 +67,23 @@ public class CategoryService {
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
 		Category entity = new Category();
+
 		entity.setName(dto.getName());
+		//para SALVAR no BANCO
+		//vamos chamar o REPOSITORY q é um OBJ do tipo CATEGORYREPOSITORY
+		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
+		//na nossa VAR ENTITY q é do tipo CATEGORY
 		entity = repository.save(entity);
-		//agora q ja ta SALVO no BANCO
-		//vamos pegar o nosso ENTITY q é do tipo CATEGORY
-		//e converter para um CATEGORYDTO
+		
 		return new CategoryDTO(entity);
 	}
 	
 	//metodo do TIPO CATEGORYDTO de nome UPDATE para ATUALIZAR
 	//os valores de uma CATEGORYDTO/category no BANCO
+
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
+
 		try {
 			Category entity = repository.getOne(id);
 			entity.setName(dto.getName());
@@ -84,7 +91,6 @@ public class CategoryService {
 
 			return new CategoryDTO(entity);
 		}
-
 		catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}		
@@ -95,7 +101,7 @@ public class CategoryService {
 		try {
 			repository.deleteById(id);
 		}
-		catch (EmptyResultDataAccessException e) 
+		catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
 		catch (DataIntegrityViolationException e) {

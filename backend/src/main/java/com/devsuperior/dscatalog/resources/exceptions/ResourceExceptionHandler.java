@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
+//para nao precisar IMPLEMENTAR BLOCO TRY CATCH em todos os METODOS
+//do CONTROLADOR, vamos criar a CLASSE RESOURCEEXCEPTIONSHANDLER
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -33,8 +35,8 @@ public class ResourceExceptionHandler {
 	
 	@ExceptionHandler(DatabaseException.class)
 	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
-
 		HttpStatus status = HttpStatus.BAD_REQUEST;
+
 		StandardError err = new StandardError();
 		
 		err.setTimestamp(Instant.now());

@@ -9,17 +9,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 //classe/entidade ROLE que é a responsavel por ter os PERFIS(niveis)
-//de USER(usuario), o perfil OPERADOR e ADMIN 
+//de USER(usuario), o perfil OPERADOR e ADMIN
+// 
 @Entity
+
 @Table(name = "tb_role")
 public class Role implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String authority;
-	
+
 	public Role() {
 	}
 	

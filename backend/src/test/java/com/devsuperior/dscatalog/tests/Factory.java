@@ -6,6 +6,7 @@ import com.devsuperior.dscatalog.dto.ProductDTO;
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
 
+//
 //criando a classe FACTORY/FABRICA... q é uma classe responsavel
 //por INSTANCIAR OBJETOS
 public class Factory {

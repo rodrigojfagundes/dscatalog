@@ -35,19 +35,18 @@ public class ProductResource {
 
 	@Autowired
 	private ProductService service;
-	@GetMapping
 
+	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> findAll(
 			Pageable pageable) {
-		Page<ProductDTO> list = service.findAllPaged(pageable);	
 
+		Page<ProductDTO> list = service.findAllPaged(pageable);	
 		return ResponseEntity.ok().body(list);
 	}
 	
 	//
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
-	//
 	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
@@ -56,7 +55,7 @@ public class ProductResource {
 	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
 		ProductDTO dto = service.findById(id);
-
+		
 		return ResponseEntity.ok().body(dto);
 	}
 	
@@ -71,21 +70,20 @@ public class ProductResource {
 	// o nome do metodo vai ser INSERT
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
-
 		dto = service.insert(dto);
-
+		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
-		
+
 		return ResponseEntity.created(uri).body(dto);
 	}
-	
 	
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
 	// da PRODUCT q queremos ATUALIZAR
+	//
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
@@ -94,13 +92,11 @@ public class ProductResource {
 	}
 
 
-
 	// METODO/ENDPOINT para DELETAR um PRODUCT
 	//
 	//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
 	//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
 	//do PRODUCT q queremos DELETAR
-	//
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);

@@ -24,6 +24,7 @@ import com.devsuperior.dscatalog.entities.Product;
 public class ProductDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	//declarando os atributos
 	private Long id;
 	private String name;
 	private String description;
@@ -35,7 +36,7 @@ public class ProductDTO implements Serializable {
 	
 	public ProductDTO() {
 	}	
-
+	
 	public ProductDTO(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
 		this.name = name;
@@ -45,9 +46,7 @@ public class ProductDTO implements Serializable {
 		this.date = date;
 	}
 	
-
 	public ProductDTO(Product entity) {
-
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.description = entity.getDescription();
@@ -57,7 +56,6 @@ public class ProductDTO implements Serializable {
 	}
 	 
 	public ProductDTO(Product entity, Set<Category> categories) {
-
 		this(entity);
 		categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
 	}
