@@ -23,27 +23,23 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE CATEGORYREPOSITORY (repository)
-//
 @Service
 public class CategoryService {
-
+	
 	@Autowired
 	private CategoryRepository repository;
-	
-	//criando um METODO do tipo PAGE de CATEGORYDTO
-	//q vamos chamar de FINDALLPAGED q recebe um PAGEREQUEST
+
 	@Transactional(readOnly = true)
 	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
-		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
-		//CATEGORYREPOSITORY e como ele o CATEGORYREPOSITORY herda os
-		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
-		//FINDALL...
-		//
+
 		Page<Category> list = repository.findAll(pageRequest);
+
 		return list.map(x -> new CategoryDTO(x));
+		//return listDto;
 	}
 	
 	//
+	//////////////////////////
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
 	//
@@ -51,7 +47,7 @@ public class CategoryService {
 	public CategoryDTO findById(Long id) {
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-		
+
 		return new CategoryDTO(entity);
 	}
 	
@@ -59,32 +55,30 @@ public class CategoryService {
 	//no BANCO
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
-		//pegando o DTO do tipo CATEGORYDTO e converter para uma
-		//ENTIDADE, Um ENTITY do tipo CATEGORY
+
 		Category entity = new Category();
 		entity.setName(dto.getName());
-							//para SALVAR no BANCO
 		entity = repository.save(entity);
+
 		return new CategoryDTO(entity);
 	}
 	
-	
-	//metodo do TIPO CATEGORYDTO de nome UPDATE para ATUALIZAR
-	//os valores de uma CATEGORYDTO/category no BANCO
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
+
 		Category entity = repository.getOne(id);
 		entity.setName(dto.getName());
 		entity = repository.save(entity);
 		return new CategoryDTO(entity);
 		}
+
 		catch(EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found" + id);
 		}
-		
 	}
 	
+	//criando um METODO para DELETAR uma CATEGORY
 	public void delete(Long id) {
 		try {
 		repository.deleteById(id);
@@ -96,5 +90,4 @@ public class CategoryService {
 			throw new DatabaseException("Integrity violation");
 		}
 	}
-	
 }

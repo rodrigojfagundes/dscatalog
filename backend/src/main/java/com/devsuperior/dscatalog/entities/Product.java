@@ -17,19 +17,11 @@ import javax.persistence.Table;
 
 
 
-//ANNOTATION @ENTITY e para dizer q essa CLASSE sera uma TABELA no
-//BANCO (mapeamento SPRING DATA JPA)... e a ANNOTATION @TABLE e 
-//para dizer q o nome da TABELA sera tb_product
 @Entity
 @Table(name = "tb_product")
-//criando uma classe de nome PRODUCT
 public class Product implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	
-	//declarando os atributos da class q TBM serão COLUNAS nas
-	//tabelas do BANCO... o @ID e para dizer q o ATRIBUTO ID sera a
-	//chave primaria da tabela
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -49,11 +41,6 @@ public class Product implements Serializable{
 	//
 	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
 	//no BANCO de MUITOS para MUITOS... 
-	//e o ANNOTATION @JOINTABLE, e para criar uma TABELA q faz
-	//uma ASSOCIACAO entre as DUAS ENTIDADES (Categories e Products)
-	//primeiro argumento(name) o NOME da TABELA...
-	//JoinColumns e para dizer qual vai ser a chave ESTRANGEIRA de PRODUCT
-	//e o INVERSEJOINCOLUMN e para dizer qual a chave ESTRANGEIRA de CATEGORY
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
 	joinColumns = @JoinColumn(name = "product_id"),
@@ -64,7 +51,6 @@ public class Product implements Serializable{
 	public Product() {
 	}
 	
-	
 	public Product(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
 		this.name = name;
@@ -73,6 +59,7 @@ public class Product implements Serializable{
 		this.imgUrl = imgUrl;
 		this.date = date;
 	}
+	
 	
 	
 	public Long getId() {
@@ -151,8 +138,7 @@ public class Product implements Serializable{
 		return categories;
 	}
 	
-	
-	//instanciando o HASHCODE EQUALS para fazer comparacoes
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

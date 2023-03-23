@@ -34,10 +34,8 @@ import com.devsuperior.dscatalog.services.CategoryService;
 @RequestMapping(value = "/categories")
 public class CategoryResource {
 
-
 	@Autowired
 	private CategoryService service;
-
 
 	@GetMapping
 	// criando o primeiro METODO/ENDPOINT... ou seja uma ROTA q vai
@@ -47,30 +45,30 @@ public class CategoryResource {
 	public ResponseEntity<Page<CategoryDTO>> findAll(
 
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
+
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
+
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
+
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy
 			) {
 		
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, 
 				Direction.valueOf(direction), orderBy);
 		Page<CategoryDTO> list = service.findAllPaged(pageRequest);
+		
 		return ResponseEntity.ok().body(list);
 	}
-
 
 	// criando um METODO/ENDPOINT para retornar uma CATEGORIA pelo o ID
 	// da CATEGORIA
 	@GetMapping(value = "/{id}")
-	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
-	// responder a uma SOLICITAÇÂO feita atraves do navegador
-	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
-	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
+
 		CategoryDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 	}
-
+	
 	// CADASTRANDO CATEGORY NO BANCO COM POST
 	@PostMapping
 	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
@@ -78,15 +76,16 @@ public class CategoryResource {
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
-
 		return ResponseEntity.created(uri).body(dto);
 	}
 
 	//
 	// METODO/ENDPOINT para ATUALIZAR uma CATEGORIA
+	//
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto) {
 		dto = service.update(id, dto);
+
 		return ResponseEntity.ok().body(dto);
 	}
 
@@ -94,8 +93,10 @@ public class CategoryResource {
 	// METODO/ENDPOINT para DELETAR uma CATEGORIA
 	//
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) { 
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+
 	service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+
 }
