@@ -14,10 +14,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
  
 @Entity
-//usando a ANNOTATION @TABLE para criar uma TABELA e coluna
-//com o NOME da CLASSE e com colunas com nome dos ATRIBUTOS
+
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,12 +31,8 @@ public class Category implements Serializable {
 	private Instant createdAt;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-
 	private Instant updatedAt;
 	
-	//fazendo o mapeamento em que uma CATEGORY tem um PRODUCT 
-	//declarando um PRODUCT do tipo SET/CONJUNTO q ira receber os
-	//PRODUCT q faz parte dessa CATEGORY
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
 	
@@ -47,7 +43,6 @@ public class Category implements Serializable {
 		this.id = id;
 		this.name = name;
 	}
-
 
 	public Long getId() {
 		return id;

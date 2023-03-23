@@ -17,18 +17,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
+	//vamos INJETAR/injecoa de depedencia do BCRYPT
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-
+	//injetando/injecao de depedencia do USERDETAILSSERVICE
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 	}
-
+	
+	//ESSE METODO CONFIGURE tera
+	//configuracao saber QUAIS USUARIOS TERA ROLE/perfil/regra 
+	//para poder acessar quais paginas e quais metodos/endpoint
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/actuator/**");
@@ -37,7 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	@Bean
 	protected AuthenticationManager authenticationManager() throws Exception {
-		// TODO Auto-generated method stub
 		return super.authenticationManager();
 	}	
 }

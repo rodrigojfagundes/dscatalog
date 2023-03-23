@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,13 +21,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
+ 
 @Entity
 @Table(name = "tb_user")
 public class User implements UserDetails, Serializable{
 	private static final long serialVersionUID = 1L;
-	
-	//declarando os atributos/variaveis/caracteristicas do USER
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,25 +37,12 @@ public class User implements UserDetails, Serializable{
 	private String email;
 	private String password;
 	
-	
-	
-	//para o USER estar associado com VARIAS ROLES
-	//vamos ter q declarar uma COLECAO de ROLES com
-	//o SET/CONJUNTO, pois o SET NAO aceita REPETICOES 
-	//(ao contrario da lista)
-	//
-	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
-	//no BANCO de MUITOS para MUITOS... 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_role",
 		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "role_id"))	
-	//fazendo o mapeamento em q um PRODUCT tem varias CATEGORIES
-	
-	//fazendo o mapeamento em q um USER tem varias ROLES
+		inverseJoinColumns = @JoinColumn(name = "role_id"))		
 	private Set<Role> roles = new HashSet<>();
 	
-
 	public User() {
 	}
 
@@ -67,6 +54,7 @@ public class User implements UserDetails, Serializable{
 		this.email = email;
 		this.password = password;
 	}
+	
 
 	public Long getId() {
 		return id;
@@ -116,8 +104,6 @@ public class User implements UserDetails, Serializable{
 		return roles;
 	}
 
-	//
-	//HASHCODE EQUALS para fazer as comparacoes
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -143,29 +129,30 @@ public class User implements UserDetails, Serializable{
 		return true;
 	}
 	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return  roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority()))
 				.collect(Collectors.toList());
 	}
-	
+
+	//metodo para pegar o USERNAME q sera um EMAIL
 	@Override
 	public String getUsername() {
-
 		return email;
 	}
 	
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
-	
+
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
 
 	@Override
 	public boolean isCredentialsNonExpired() {

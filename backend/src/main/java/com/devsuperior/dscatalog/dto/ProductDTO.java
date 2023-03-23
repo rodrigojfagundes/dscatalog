@@ -14,36 +14,31 @@ import javax.validation.constraints.Size;
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
 
-//DTO é um OBJ q serve para FILTRAR transferencia de DADOS... Exemplo
-//temos um OBJ do tipo USER q tem NOME, IDADE, CPF, CEL, etc... Mas
-//queremos q seja transferido para o FRONT apenas o NOME e IDADE
-//dai usemos o USER_DTO... Vantagem é Controlar quais dados q vao ser
-//jogados para o RESOURCER/controlador, e assim da mais seguranca e 
-//economiza dados na REDE
+
 
 public class ProductDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	private Long id;
 	@Size(min = 5, max = 60, message = "Deve ter entre 5 e 60 caracteres")
 	@NotBlank(message = "campo requerido")
 	private String name;
-
+	
 	@NotBlank(message = "campo requerido")
 	private String description;
 
 	@Positive(message = "Preco deve ser um valor positivo")
 	private Double price;
 	private String imgUrl;
-	
+
 	@PastOrPresent(message = "A data do produto nao pode ser futura")
 	private Instant date;
-	
+
 	private List<CategoryDTO> categories = new ArrayList<>();
 	
 	public ProductDTO() {
 	}	
-	
+
 	public ProductDTO(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
 		this.name = name;
@@ -53,7 +48,9 @@ public class ProductDTO implements Serializable {
 		this.date = date;
 	}
 	
+	
 	public ProductDTO(Product entity) {
+
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.description = entity.getDescription();
@@ -61,10 +58,11 @@ public class ProductDTO implements Serializable {
 		this.imgUrl = entity.getImgUrl();
 		this.date = entity.getDate();
 	}
-	 
+	
+ 
 	public ProductDTO(Product entity, Set<Category> categories) {
-		this(entity);
 
+		this(entity);
 		categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
 	}
 	
