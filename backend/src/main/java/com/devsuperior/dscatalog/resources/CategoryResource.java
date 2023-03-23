@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,27 +34,56 @@ public class CategoryResource {
 	private CategoryService service;
 
 	@GetMapping
+	// criando o primeiro METODO/ENDPOINT... ou seja uma ROTA q vai
+	// responder a uma SOLICITAÇÂO feita atraves do navegador
+	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
+	// encapsula uma RESPOSTA/retorno no formato HTTP... E
+	// entre <<>> nos vamos colocar o tipo de dado q estara presente
+	// dentro do RESPONSEENTITY no caso é um LIST de CATEGORYDTO
 	public ResponseEntity<List<CategoryDTO>> findAll() {
 
+		// criando uma LISTA do tipo CATEGORYDTO q irá se chamar de LIST
+		// e essa lista, vai receber o RETORNO do metodo FINDALL
+		// q esta na classe CATEGORYSERVICE, q nos iremos chamar
+		// pelo SERVICE
 		List<CategoryDTO> list = service.findAll();
 
 		return ResponseEntity.ok().body(list);
 	}
 
+	// criando um METODO/ENDPOINT para retornar uma CATEGORIA pelo o ID
+	// da CATEGORIA
+	//
+	// o @GETMAPPING e para dizer q o metodo FINDBYID vai ser um METODO
+	// q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
+	// dados e o VALUE ali nos vamos passar {ID} pois quando nos buscar
+	//uma CATEGORY especifica nos vamos passar assim
+	//localhost:8080/category/ID (valor do id)
 	@GetMapping(value = "/{id}")
-
 	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
-
 		CategoryDTO dto = service.findById(id);
+		
 		return ResponseEntity.ok().body(dto);
 	}
 
+	//		CADASTRANDO CATEGORY NO BANCO COM POST
+	//
 	@PostMapping
 	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto){
 		dto = service.insert(dto);
-
+		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
+	
+	//
+			//METODO/ENDPOINT para ATUALIZAR uma CATEGORIA
+	//
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto){
+		dto = service.update(id, dto);
+
+		return ResponseEntity.ok().body(dto);
+	}	
 }
