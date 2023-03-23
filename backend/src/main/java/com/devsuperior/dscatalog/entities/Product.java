@@ -30,7 +30,6 @@ public class Product implements Serializable{
 	private String imgUrl;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-
 	private Instant date;
 	
 	//para o PRODUCT estar associado com VARIAS CATEGORIAS
@@ -39,7 +38,7 @@ public class Product implements Serializable{
 	//(ao contrario da lista)
 	//
 	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
-	//no BANCO de MUITOS para MUITOS... (muitos produtos para muitas categorias) 
+	//no BANCO de MUITOS para MUITOS... 
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
 	joinColumns = @JoinColumn(name = "product_id"),
@@ -49,7 +48,7 @@ public class Product implements Serializable{
 	
 	public Product() {
 	}
-
+	
 	public Product(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
 		this.name = name;
@@ -59,6 +58,7 @@ public class Product implements Serializable{
 		this.date = date;
 	}
 	
+
 	public Long getId() {
 		return id;
 	}

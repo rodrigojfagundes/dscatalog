@@ -25,27 +25,25 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //CLASSE CATEGORYREPOSITORY (repository)
 @Service
 public class CategoryService {
-
+	
 	@Autowired
 	private CategoryRepository repository;
 	
 	@Transactional(readOnly = true)
 	public Page<CategoryDTO> findAllPaged(Pageable pageable){
-		//vamos chamar a VARIAVEL repository do tipo
+		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
 		//CATEGORYREPOSITORY e como ele o CATEGORYREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
-
 		Page<Category> list = repository.findAll(pageable);
 
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
 	
-
+	//
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
-	//
 	//
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
@@ -59,29 +57,26 @@ public class CategoryService {
 	//no BANCO
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
-
 		Category entity = new Category();
-		//convertendo de CATEGORY DTO para CATEGORY
 		entity.setName(dto.getName());
 		//para SALVAR no BANCO
-		//vamos chamar o REPOSITORY q é um VAR do tipo CATEGORYREPOSITORY
-		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
-		//na nossa VAR ENTITY q é do tipo CATEGORY
 		entity = repository.save(entity);
 		
 		return new CategoryDTO(entity);
 	}
 	
+	
+	//metodo do TIPO CATEGORYDTO de nome UPDATE para ATUALIZAR
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
-	
+
 		try {
 		Category entity = repository.getOne(id);
 		entity.setName(dto.getName());
 		entity = repository.save(entity);
-	
 		return new CategoryDTO(entity);
 		}
+
 		catch(EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found" + id);
 		}
@@ -89,15 +84,16 @@ public class CategoryService {
 	
 	//criando um METODO para DELETAR uma CATEGORY
 	public void delete(Long id) {
-
 		try {
 		repository.deleteById(id);
 		}
 		catch(EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
+
 		catch(DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
 	}
+	
 }
