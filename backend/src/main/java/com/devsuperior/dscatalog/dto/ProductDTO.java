@@ -31,7 +31,7 @@ public class ProductDTO implements Serializable{
 
 	private List<CategoryDTO> categories = new ArrayList<>();
 	
-	
+
 	public ProductDTO() {
 	}
 
@@ -44,9 +44,9 @@ public class ProductDTO implements Serializable{
 		this.imgUrl = imgUrl;
 		this.date = date;
 	}
-
 	
 	public ProductDTO(Product entity) {
+
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.description = entity.getDescription();
@@ -128,5 +128,8 @@ public class ProductDTO implements Serializable{
 
 	public void setCategories(List<CategoryDTO> categories) {
 		this.categories = categories;
-	}	
+	}
+	
+	
+	
 }

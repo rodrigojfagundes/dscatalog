@@ -15,10 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "tb_product")
-
 public class Product implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -41,17 +39,17 @@ public class Product implements Serializable{
 	//(ao contrario da lista)
 	//
 	//usando a ANNOTATION @MANYTOMANY para fazer uma ASSOCIACAO
-	//no BANCO de MUITOS para MUITOS... (muitos produtos para muitas categorias)	
+	//no BANCO de MUITOS para MUITOS... (muitos produtos para muitas categorias) 
 	@ManyToMany
 	@JoinTable(name = "tb_product_category",
 	joinColumns = @JoinColumn(name = "product_id"),
 	inverseJoinColumns = @JoinColumn(name = "category_id")
 			)
 	Set<Category> categories = new HashSet<>();
-
+	
 	public Product() {
 	}
-	
+
 	public Product(Long id, String name, String description, Double price, String imgUrl, Instant date) {
 		this.id = id;
 		this.name = name;
@@ -61,8 +59,6 @@ public class Product implements Serializable{
 		this.date = date;
 	}
 	
-	
-	//criando os GET e SET
 	public Long getId() {
 		return id;
 	}

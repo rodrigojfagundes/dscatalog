@@ -36,29 +36,22 @@ public class CategoryResource {
 	private CategoryService service;
 
 	@GetMapping
-	// criando o primeiro METODO/ENDPOINT... ou seja uma ROTA q vai
-	// responder a uma SOLICITAÇÂO feita atraves do navegador
-	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
-	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<Page<CategoryDTO>> findAll(
 			Pageable pageable
 			) {
 		Page<CategoryDTO> list = service.findAllPaged(pageable);
-
 		return ResponseEntity.ok().body(list);
 	}
 
-
+	//
 	// criando um METODO/ENDPOINT para retornar uma CATEGORIA pelo o ID
 	// da CATEGORIA
 	//
-	//
-	// o @GETMAPPING e para dizer q o metodo FINDBYID vai ser um METODO
-	// q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
-	// dados e o VALUE ali nos vamos passar {ID} pois quando nos buscar
-	// uma CATEGORY especifica nos vamos passar assim
-	// localhost:8080/category/ID (valor do id)
 	@GetMapping(value = "/{id}")
+	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
+	// responder a uma SOLICITAÇÂO feita atraves do navegador
+	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
+	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
 		CategoryDTO dto = service.findById(id);
 
@@ -72,6 +65,7 @@ public class CategoryResource {
 	// o RESPONSEENTITY e do tipo CATEGORYDTO, pois DPS de INSERIR
 	// nos vamos RETORNAR o nome da CATEGORY/categorydto q foi inserido
 	// o nome do metodo vai ser INSERT
+	//
 	@PostMapping
 	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
 		dto = service.insert(dto);
@@ -81,7 +75,6 @@ public class CategoryResource {
 		return ResponseEntity.created(uri).body(dto);
 	}
 
-
 	// METODO/ENDPOINT para ATUALIZAR uma CATEGORIA
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
@@ -90,17 +83,24 @@ public class CategoryResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto) {
 		dto = service.update(id, dto);
-
+		
 		return ResponseEntity.ok().body(dto);
 	}
 
-
+	
 	// METODO/ENDPOINT para DELETAR uma CATEGORIA
 	//
+	//
+	//
+	//
+//METODO/ENDPOINT DELETE (DELETEMAPPING), q é o METODO REST para DELETAR
+//e a ROTA da ANNOTATION @DELETEMAPPING vai ter o VALUE ID q é o ID
+//da CATEGORY q queremos DELETAR
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 	service.delete(id);
 
 		return ResponseEntity.noContent().build();
 	}
+
 }

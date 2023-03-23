@@ -36,10 +36,6 @@ public class ProductResource {
 	private ProductService service;
 
 	@GetMapping
-	// criando o primeiro METODO/ENDPOINT... ou seja uma ROTA q vai
-	// responder a uma SOLICITAÇÂO feita atraves do navegador
-	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
-	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<Page<ProductDTO>> findAll(
 			Pageable pageable
 			) {
@@ -48,50 +44,49 @@ public class ProductResource {
 		return ResponseEntity.ok().body(list);
 	}
 
-
+	/////////////////////////////
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
-	//
-	//
-	//
-	// o @GETMAPPING e para dizer q o metodo FINDBYID vai ser um METODO
-	// q sera solicitado PELO GET do navegador... ou SEJA PARA PEGAR
-	// dados e o VALUE ali nos vamos passar {ID} pois quando nos buscar
-	// um PRODUCT especifico nos vamos passar assim
-	// localhost:8080/product/ID (valor do id)
 	@GetMapping(value = "/{id}")
+	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
+	// responder a uma SOLICITAÇÂO feita atraves do navegador
+	// o retorno do metodo é um RESPONSEENTITY q é um OBJ do spring q
+	// encapsula uma RESPOSTA/retorno no formato HTTP...
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
 		ProductDTO dto = service.findById(id);
-		
+
 		return ResponseEntity.ok().body(dto);
 	}
-	
+
 	// CADASTRANDO PRODUCT NO BANCO COM POST
 	//
+	//
+
 	// METODO POST RESTFUL para inserir no BANCO um novo produto
 	// o RESPONSEENTITY e do tipo PRODUCTDTO, pois DPS de INSERIR
 	// nos vamos RETORNAR o nome da PRODUCT/productdto q foi inserido
 	// o nome do metodo vai ser INSERT
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
-
 		dto = service.insert(dto);
+
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(dto);
 	}
 
-
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
+	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
+	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
+	// da PRODUCT q queremos ATUALIZAR
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(dto);
 	}
-	
 	
 	// METODO/ENDPOINT para DELETAR um PRODUCT
 	//

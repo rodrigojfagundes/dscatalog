@@ -12,13 +12,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-//classe category q esta no PACOTE ENTITY
  
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -30,16 +29,15 @@ public class Category implements Serializable {
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updateAt;
 	
-	
 	public Category() {
 	}
-
+	
 	public Category(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 	
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -74,7 +72,6 @@ public class Category implements Serializable {
 		updateAt = Instant.now();
 	}
 	
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
