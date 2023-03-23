@@ -12,8 +12,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-//classe category q esta no PACOTE ENTITY
- 
+
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
@@ -25,14 +24,16 @@ public class Category implements Serializable {
 	private String name;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	//declarando um ATRIBUTO do tipo DATA/INSTANT chamado CREATEDAT
 	private Instant createdAt;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updateAt;
 	
+	
 	public Category() {
 	}
-	
+
 	public Category(Long id, String name) {
 		this.id = id;
 		this.name = name;

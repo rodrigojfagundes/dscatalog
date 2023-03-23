@@ -23,14 +23,9 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE CATEGORYREPOSITORY (repository)
-//
 @Service
 public class CategoryService {
 	
-	//criando uma DEPEDENCIA/VARIAVEL do tipo
-	//CATEGORYREPOSITORY de nome REPOSITORY
-	//e com o ANNOTATION @Autowired serve para INJETAR AUTOMATICAMENTE
-	//uma INSTANCIA gerenciada pelo SPRINGBOOT
 	@Autowired
 	private CategoryRepository repository;
 	
@@ -41,21 +36,22 @@ public class CategoryService {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
 		//CATEGORYREPOSITORY e como ele o CATEGORYREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
-		//FINDALL...
+		//FINDALL... E passamos o valor do PAGEREQUEST
 		//
 		Page<Category> list = repository.findAll(pageRequest);
-		//de CATEGORY para CATEGORYDTO
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
 	
+	//
 	//
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
 	//
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
-
+		//chamando o OBJ REPOSITORY que é o OBJ da classe CATEGORYREPOSITORY
+		//e essa classe é a responsavel por ACESSO AO BANCO
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
 
@@ -66,11 +62,12 @@ public class CategoryService {
 	//no BANCO
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {
-
+		//pegando o DTO do tipo CATEGORYDTO e converter para uma
+		//ENTIDADE, Um ENTITY do tipo CATEGORY
 		Category entity = new Category();
 		entity.setName(dto.getName());
+		//Salvando a var ENTITY do tipo CATEGORY no banco
 		entity = repository.save(entity);
-		
 		return new CategoryDTO(entity);
 	}
 	
@@ -79,14 +76,17 @@ public class CategoryService {
 	//os valores de uma CATEGORYDTO/category no BANCO
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
-
 		try {
+		//instanciando uma ENTIDADE/OBJETO do tipo CATEGORY de nome ENTITY
+		//E a ENTITY vai receber o RETORNO do METODO GETONE do REPOSITORY
+		//metodo GETONE q recebe o ID da CATEGORY q queremos q SEJA ATUALIZADA
 		Category entity = repository.getOne(id);
+		//vamos atualizar os DADOS, ou seja vamos PEGAR o o DTO
+		//e passar o valor q ta em NAME do DTO para o nosso ENTITY
 		entity.setName(dto.getName());
 		entity = repository.save(entity);
 		return new CategoryDTO(entity);
 		}
-
 		catch(EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found" + id);
 		}
@@ -97,7 +97,6 @@ public class CategoryService {
 	public void delete(Long id) {
 
 		try {
-
 		repository.deleteById(id);
 		}
 		catch(EmptyResultDataAccessException e) {
@@ -107,5 +106,4 @@ public class CategoryService {
 			throw new DatabaseException("Integrity violation");
 		}
 	}
-	
 }

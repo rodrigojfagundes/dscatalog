@@ -28,9 +28,12 @@ public class ProductDTO implements Serializable{
 	private Double price;
 	private String imgUrl;
 	private Instant date;
+	//o nosso PRODUCTDTO vai poder receber uma LISTA de
+	//CATEGORY... Pois um produto pode ter VARIAS CATEGORIAS
+	//associação
 	private List<CategoryDTO> categories = new ArrayList<>();
 	
-	
+		
 	public ProductDTO() {
 	}
 
@@ -43,7 +46,6 @@ public class ProductDTO implements Serializable{
 		this.imgUrl = imgUrl;
 		this.date = date;
 	}
-
 	
 	public ProductDTO(Product entity) {
 		this.id = entity.getId();
@@ -54,10 +56,9 @@ public class ProductDTO implements Serializable{
 		this.date = entity.getDate();
 	}
 	
-
+ 
 	public ProductDTO(Product entity, Set<Category> categories) {
-
-		this(entity);
+		this(entity);	
 		categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
 	}
 
@@ -129,8 +130,5 @@ public class ProductDTO implements Serializable{
 
 	public void setCategories(List<CategoryDTO> categories) {
 		this.categories = categories;
-	}
-	
-	
-	
+	}	
 }
