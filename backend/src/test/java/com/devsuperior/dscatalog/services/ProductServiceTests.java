@@ -104,7 +104,6 @@ public class ProductServiceTests {
 	}
 	
 	
-	
 	@Test
 	public void deleteShouldDoNothingWhenIdExists() {
 		
