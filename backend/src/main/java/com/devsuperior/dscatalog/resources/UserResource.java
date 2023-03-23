@@ -35,7 +35,7 @@ import com.devsuperior.dscatalog.services.UserService;
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
-
+	
 	@Autowired
 	private UserService service;
 	
@@ -50,7 +50,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	
+	//
 	// criando um METODO/ENDPOINT para retornar um USUARIO pelo o ID
 	// da USUARIO
 	//
@@ -65,14 +65,13 @@ public class UserResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
-
 	// CADASTRANDO USER NO BANCO COM POST
 	//
 	// METODO POST RESTFUL para inserir no BANCO um novo usuario
 	// o RESPONSEENTITY e do tipo USERINSERTDTO, pois DPS de INSERIR
 	// nos vamos RETORNAR o nome do USER/userdto q foi inserido
 	// o nome do metodo vai ser INSERT
-
+	
 	@PostMapping
 	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto) {
 		UserDTO newDto = service.insert(dto);
@@ -84,13 +83,17 @@ public class UserResource {
 	
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
+	//
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
 		dto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(dto);
 	}
-	
+
+	//
+	// METODO/ENDPOINT para DELETAR um USER
+	//
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) { 
 		service.delete(id);

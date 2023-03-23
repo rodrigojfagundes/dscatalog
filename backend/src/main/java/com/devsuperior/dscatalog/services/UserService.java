@@ -28,7 +28,6 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 //aqui conforme o q foi solicitado, e quando PRECISA pegar 
 //algum dado ela se conecta AO BANCO, fazendo solicitacao a 
 //CLASSE USERREPOSITORY (repository)
-//
 @Service
 public class UserService {
 	
@@ -42,15 +41,18 @@ public class UserService {
 
 	@Autowired
 	private RoleRepository roleRepository;
-
+	
+	
+	//criando um METODO do tipo PAGE de USERDTO
+	//q vamos chamar de FINDALLPAGED q recebe um PEGEABLE
 	@Transactional(readOnly = true)
 	public Page<UserDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
 		//USERREPOSITORY e como ele o USERREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
+		//
 		Page<User> list = repository.findAll(pageable);
-
 		return list.map(x -> new UserDTO(x));
 		//return listDto;
 	}
@@ -63,9 +65,13 @@ public class UserService {
 	//
 	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
+		//chamando o OBJ REPOSITORY que é o OBJ da classe USERREPOSITORY
+		//e essa classe é a responsavel por ACESSO AO BANCO
+		//e o resultado dessa busca, vamos armazenar em um OBJ OPTIONAL
+		//do tipo PRODUCT
 		Optional<User> obj = repository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		
+
 		return new UserDTO(entity);
 	}
 	
@@ -111,7 +117,8 @@ public class UserService {
 		}
 	}
 	
-
+	//
+	//
 	//criando um metodo AUXILIAR de nome COPYDTOTOENTITY para pegar 
 	//as INFORMACOES/ATRIBUTOS q estao no USERDTO e passar para o
 	//ENTITY que é uma VAR/OBJ do tipo USER
@@ -120,7 +127,7 @@ public class UserService {
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
-		
+
 		entity.getRoles().clear();
 
 		for (RoleDTO roleDto : dto.getRoles()) {

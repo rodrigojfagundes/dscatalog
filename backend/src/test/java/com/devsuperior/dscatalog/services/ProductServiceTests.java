@@ -50,13 +50,16 @@ public class ProductServiceTests {
 	
 	@BeforeEach
 	void setUp() throws Exception {
+
 		existingId = 1L;
 		nonExistingId = 2L;
 		dependentId = 3L;
 
 		product = Factory.createProduct();
+
 		page = new PageImpl<>(List.of(product));
 		
+
 		Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(page);
 		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(product);
 		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
@@ -66,9 +69,9 @@ public class ProductServiceTests {
 		Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
 	}
 	
-
 	@Test
 	public void findAllPagedShouldReturnPage() {
+
 		Pageable pageable = PageRequest.of(0, 12);
 		Page<ProductDTO> result = service.findAllPaged(pageable);
 		Assertions.assertNotNull(result);
@@ -85,6 +88,8 @@ public class ProductServiceTests {
 		
 		Mockito.verify(repository, times(1)).deleteById(dependentId);
 	}
+	
+	
 
 	@Test
 	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {

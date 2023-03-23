@@ -5,28 +5,20 @@ package com.devsuperior.dscatalog.dto;
 //
 public class UserInsertDTO extends UserDTO {
 	private static final long serialVersionUID = 1L;
-	
-	//declarando o atributo
+
 	private String password;
 	
-	
-	//criando o construtor vazio
+
 	UserInsertDTO(){
 		super();
 	}
 	
-	
-	//declarando os GET e SET
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	
-	
-	
-	
-	
+	}	
 }

@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 
 //classe category q esta no PACOTE ENTITY
- 
+
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
@@ -34,7 +34,7 @@ public class Category implements Serializable {
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updatedAt;
 	
-	//fazendo o mapeamento em que uma CATEGORY tem um PRODUCT 
+//fazendo o mapeamento em que uma CATEGORY tem um PRODUCT 
 	//declarando um PRODUCT do tipo SET/CONJUNTO q ira receber os
 	//PRODUCT q faz parte dessa CATEGORY
 	//

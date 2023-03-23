@@ -38,13 +38,16 @@ public class ProductService {
 	
 	//criando um METODO do tipo PAGE de PRODUCTDTO
 	//q vamos chamar de FINDALLPAGED q recebe um PEGEABLE
+
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
 		//PRODUCTREPOSITORY e como ele o PRODUCTREPOSITORY herda os
 		//METODOS DO JPA para acesso ao BANCO, nos vamos chamar o metodo
 		//FINDALL...
+		//
 		Page<Product> list = repository.findAll(pageable);
+		
 		return list.map(x -> new ProductDTO(x));
 		//return listDto;
 	}
@@ -52,6 +55,7 @@ public class ProductService {
 	//
 	//metodo FINDBYID q busca uma determinado PRODUCT conforme o ID
 	//informado
+	//
 	//
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
@@ -61,7 +65,7 @@ public class ProductService {
 		//do tipo PRODUCT
 		Optional<Product> obj = repository.findById(id);
 		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-	
+		
 		return new ProductDTO(entity, entity.getCategories());
 	}
 	
@@ -70,14 +74,16 @@ public class ProductService {
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
 		Product entity = new Product();
+		//chamando o metodo AUXILIAR (COPYDTOTOENTITY) para pegar as 
+		//INFORMACOES q estao no DTO e passar para o ENTITY que é uma
+		//VAR/OBJ do tipo PRODUCT
 		copyDtoToEntity(dto, entity);
 		//para SALVAR no BANCO
 		entity = repository.save(entity);
-
+	
 		return new ProductDTO(entity);
 	}
 
-	
 	//metodo do TIPO PRODUCTDTO de nome UPDATE para ATUALIZAR
 	//os valores de um PRODUCTDTO/product no BANCO
 	@Transactional
@@ -86,7 +92,7 @@ public class ProductService {
 			Product entity = repository.getOne(id);
 			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
-
+	
 			return new ProductDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
@@ -97,9 +103,12 @@ public class ProductService {
 	//criando um METODO para DELETAR um PRODUCT
 	public void delete(Long id) {
 		try {
+
 			repository.deleteById(id);
 		}
+
 		catch (EmptyResultDataAccessException e) {
+
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
 		catch (DataIntegrityViolationException e) {
@@ -107,6 +116,10 @@ public class ProductService {
 		}
 	}
 	
+
+	//criando um metodo AUXILIAR de nome COPYDTOTOENTITY para pegar 
+	//as INFORMACOES/ATRIBUTOS q estao no PRODUCTDTO e passar para o
+	//ENTITY que é uma VAR/OBJ do tipo PRODUCT
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
 
 		entity.setName(dto.getName());
@@ -114,12 +127,11 @@ public class ProductService {
 		entity.setDate(dto.getDate());
 		entity.setImgUrl(dto.getImgUrl());
 		entity.setPrice(dto.getPrice());
-		
 		entity.getCategories().clear();
-
+	
 		for (CategoryDTO catDto : dto.getCategories()) {
 			Category category = categoryRepository.getOne(catDto.getId());
-
+	
 			entity.getCategories().add(category);			
 		}
 	}	

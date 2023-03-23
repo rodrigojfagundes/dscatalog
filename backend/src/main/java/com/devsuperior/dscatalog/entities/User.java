@@ -53,7 +53,6 @@ public class User implements Serializable{
 		joinColumns = @JoinColumn(name = "user_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id"))	
 
-
 	private Set<Role> roles = new HashSet<>();
 	
 
@@ -69,7 +68,6 @@ public class User implements Serializable{
 		this.password = password;
 	}
 	
-
 
 	public Long getId() {
 		return id;
@@ -119,6 +117,8 @@ public class User implements Serializable{
 		return roles;
 	}
 
+	//
+	//HASHCODE EQUALS para fazer as comparacoes
 	@Override
 	public int hashCode() {
 		final int prime = 31;

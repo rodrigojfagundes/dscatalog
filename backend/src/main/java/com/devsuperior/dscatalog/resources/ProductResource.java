@@ -49,10 +49,10 @@ public class ProductResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	
+	//
 	// criando um METODO/ENDPOINT para retornar um PRODUTO pelo o ID
 	// da PRODUTO
-	
+	//
 	@GetMapping(value = "/{id}")
 	// criando o METODO/ENDPOINT... ou seja uma ROTA q vai
 	// responder a uma SOLICITAÇÂO feita atraves do navegador
@@ -63,37 +63,35 @@ public class ProductResource {
 
 		return ResponseEntity.ok().body(dto);
 	}
-
+	
 	// CADASTRANDO PRODUCT NO BANCO COM POST
+	//
 	//
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
-
+		
 		return ResponseEntity.created(uri).body(dto);
 	}
-	
 	
 	// METODO/ENDPOINT para ATUALIZAR um PRODUTO
 	//
 	// METODO/ENDPOINT PUT (putmapping), q é o METODO REST para ATUALIZACOES
 	// e a ROTA da ANNOTATION @PUTMAPPING vai ter o VALUE ID q é o ID
 	// da PRODUCT q queremos ATUALIZAR
-	//
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
 
 		return ResponseEntity.ok().body(dto);
 	}
-
-
-	// METODO/ENDPOINT para DELETAR um PRODUCT
 	//
+	//
+	// METODO/ENDPOINT para DELETAR um PRODUCT
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) { 
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 
 		return ResponseEntity.noContent().build();

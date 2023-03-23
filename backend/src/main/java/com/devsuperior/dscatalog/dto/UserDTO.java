@@ -18,12 +18,12 @@ import com.devsuperior.dscatalog.entities.User;
 
 public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	
 	private Long id;
 	@NotBlank(message = "Campo obrigatorio")
 	private String firstName;
 	private String lastName;
-
 	@Email(message = "Favor entrar um email valido")
 	private String email;
 	
@@ -32,7 +32,7 @@ public class UserDTO implements Serializable {
 	public UserDTO() {
 	}
 	
-
+	
 	public UserDTO(Long id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
@@ -40,8 +40,9 @@ public class UserDTO implements Serializable {
 		this.email = email;
 	}
 	
-	
+
 	public UserDTO(User entity) {
+
 		this.id = entity.getId();
 		this.firstName = entity.getFirstName();
 		this.lastName = entity.getLastName();
@@ -51,7 +52,6 @@ public class UserDTO implements Serializable {
 		
 	}
 	
-
 	public Long getId() {
 		return id;
 	}
@@ -95,4 +95,5 @@ public class UserDTO implements Serializable {
 	public Set<RoleDTO> getRoles() {
 		return roles;
 	}
+
 }

@@ -70,7 +70,6 @@ public class ProductResourceTests {
 		when(service.update(eq(nonExistingId), any())).thenThrow(ResourceNotFoundException.class);
 
 		doNothing().when(service).delete(existingId);
-
 		doThrow(ResourceNotFoundException.class).when(service).delete(nonExistingId);
 		doThrow(DatabaseException.class).when(service).delete(dependentId);
 	}
@@ -146,14 +145,10 @@ public class ProductResourceTests {
 	@Test
 	public void findAllShouldReturnPage() throws Exception {
 		
-		//aqui nos estamos fazendo uma CHAMADA da pagina PRODUCTS
-		//armazenando o RESULTADO na variavel RESULT
 		ResultActions result = 
 				mockMvc.perform(get("/products")
 					.accept(MediaType.APPLICATION_JSON));
 		
-		//e dps aqui em baixo nos fazemos as ASSERTIONS, ou seja
-		//o teste para ver se o resultado deu ok
 		result.andExpect(status().isOk());
 	}
 	

@@ -29,7 +29,7 @@ public class CategoryService {
 	
 	@Autowired
 	private CategoryRepository repository;
-
+	
 	@Transactional(readOnly = true)
 	public Page<CategoryDTO> findAllPaged(Pageable pageable) {
 		//vamos chamar o OBJ/DEPEDENCIA/VARIAVEL repository do tipo
@@ -38,14 +38,16 @@ public class CategoryService {
 		//FINDALL...
 		//
 		Page<Category> list = repository.findAll(pageable);
-
+	
 		return list.map(x -> new CategoryDTO(x));
 		//return listDto;
 	}
 	
 	//
+	//
 	//metodo FINDBYID q busca uma determinada CATEGORY conforme o ID
 	//informado
+	//
 	//
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
@@ -55,7 +57,7 @@ public class CategoryService {
 		//do tipo CATEGORY
 		Optional<Category> obj = repository.findById(id);
 		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		
+	
 		return new CategoryDTO(entity);
 	}
 	
@@ -66,9 +68,6 @@ public class CategoryService {
 		Category entity = new Category();
 		entity.setName(dto.getName());
 		//para SALVAR no BANCO
-		//vamos chamar o REPOSITORY q é um OBJ do tipo CATEGORYREPOSITORY
-		//dai para o SAVE do REPOSITORY vamos passar o valor q ta
-		//na nossa VAR ENTITY q é do tipo CATEGORY
 		entity = repository.save(entity);
 
 		return new CategoryDTO(entity);
@@ -76,7 +75,7 @@ public class CategoryService {
 	
 	//metodo do TIPO CATEGORYDTO de nome UPDATE para ATUALIZAR
 	//os valores de uma CATEGORYDTO/category no BANCO
-	//
+
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
@@ -93,12 +92,15 @@ public class CategoryService {
 	
 	//criando um METODO para DELETAR uma CATEGORY
 	public void delete(Long id) {
+
 		try {
 			repository.deleteById(id);
 		}
+		
 		catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
 		}
+
 		catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}

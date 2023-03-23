@@ -10,7 +10,9 @@ import javax.persistence.Table;
 
 //classe/entidade ROLE que é a responsavel por ter os PERFIS(niveis)
 //de USER(usuario), o perfil OPERADOR e ADMIN
-// 
+//
+//colocando um ANNOTATION @ENTITY para MAPEAR a classe CATEGORY
+//com as ANNOTATION do JPA... 
 @Entity
 @Table(name = "tb_role")
 public class Role implements Serializable{
@@ -23,6 +25,7 @@ public class Role implements Serializable{
 	
 	public Role() {
 	}
+	
 
 	public Role(Long id, String authority) {
 		super();
